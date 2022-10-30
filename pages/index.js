@@ -6,11 +6,16 @@ export default function Home() {
   var peerInstance = useRef(null);
   var connection = useRef(null);
 
+  const remoteVideoRef = useRef(null);
+  const currentUserVideoRef = useRef(null);
+
   const [ id, setId ] = useState();
+  const [ peerId, setPeerId ] = useState();
 
   const [ peerName, setPeerName ] = useState();
 
   const [ connected, setConnected ] = useState(false);
+  const [ onCall, setOnCall ] = useState(false);
   const [ messagesData, setMessagesData ] = useState([]);
 
   const [ name, setName ] = useState("");
@@ -64,12 +69,35 @@ export default function Home() {
         openConnection(conn, "receiver");
       });
 
+      // Receiving call
+      peer.on('call', function(call) {
+        setOnCall(true);
+        
+        var getUserMedia = navigator.mediaDevices.getUserMedia
+          || navigator.getUserMedia
+          || navigator.webkitGetUserMedia
+          || navigator.mozGetUserMedia;
+
+        getUserMedia({ video: true, audio: true }, (mediaStream) => {
+          currentUserVideoRef.current.srcObject = mediaStream;
+          currentUserVideoRef.current.play();
+
+          call.answer(mediaStream);
+
+          call.on('stream', function(remoteStream) {
+            remoteVideoRef.current.srcObject = remoteStream
+            remoteVideoRef.current.play();
+          });
+        });
+      });
+
       peerInstance.current = peer;
     })
   }, []);
 
   const connect = (e) => {
     var conn = peerInstance.current.connect(connectId);
+    setPeerId(connectId);
 
     openConnection(conn, "sender");
   }
@@ -88,6 +116,30 @@ export default function Home() {
 
     setMessagesData(old => [...old, data])
     connection.current.send(data);
+  }
+
+  const call = () => {
+    setOnCall(true);
+
+    var getUserMedia = navigator.getUserMedia 
+      || navigator.mediaDevices.getUserMedia
+      || navigator.webkitGetUserMedia
+      || navigator.mozGetUserMedia;
+
+    getUserMedia({ video: true, audio: true }, (mediaStream) => {
+
+      currentUserVideoRef.current.srcObject = mediaStream;
+      currentUserVideoRef.current.play();
+
+      console.log(peerId);
+
+      const call = peerInstance.current.call(peerId, mediaStream);
+
+      call.on('stream', (remoteStream) => {
+        remoteVideoRef.current.srcObject = remoteStream;
+        remoteVideoRef.current.play();
+      });
+    });
   }
 
   if (!connected) return (
@@ -152,6 +204,19 @@ export default function Home() {
     </>
   )
 
+  if (onCall) {
+    return (
+      <div>
+        <div>
+          <video ref={currentUserVideoRef} />
+        </div>
+        <div>
+          <video ref={remoteVideoRef} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Head>
@@ -161,8 +226,9 @@ export default function Home() {
       </Head>
 
       <main>
-        <section className='mt-2 text-center'>
-          <p className='text-xl'>{peerName ? peerName : "Unknown Alien"}</p>
+        <section className='flex justify-between mx-10 mt-3'>
+          <p className='text-xl text-center'>{peerName ? peerName : "Unknown Alien"}</p>
+          <button onClick={() => call()} className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
         </section>
 
         <section className='flex flex-col text-right mt-5 mx-3'>
