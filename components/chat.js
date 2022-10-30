@@ -17,6 +17,7 @@ function Chat({ id, peerId, peerName, connection }) {
         const data = { id: id, type: "message", message: message };
 
         setMessagesData(old => [...old, data])
+        setMessage("");
         connection.current.send(data);
     }
 
@@ -49,9 +50,12 @@ function Chat({ id, peerId, peerName, connection }) {
                 )}
                 </section>
 
-                <section className='w-full mx-5 fixed bottom-0 mb-5'>
-                    <input onChange={(e) => {setMessage(e.target.value)}} className='w-10/12 h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
-                    <button className='ml-2' onClick={sendChat}>Send</button>
+                <section className='w-screen mx-5 fixed bottom-0 mb-5'>
+                    <input value={message} onChange={(e) => {setMessage(e.target.value)}} className={`${message ? 'w-9/12' : 'w-11/12'} h-10 px-2 border border-[#222222] rounded-md`} type="textarea"></input>
+                    { message
+                        ? <button className='ml-3 bg-[#222222] text-white rounded-full px-5 py-1' onClick={sendChat}>Send</button>
+                        : <></> 
+                    }
                 </section>
             </div>
         </div>
