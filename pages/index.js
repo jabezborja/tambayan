@@ -26,7 +26,7 @@ export default function Home() {
       const peer = new Peer({
         config: {
           iceServers: [
-            { url: 'turn:13.250.13.83:3478?transport=udp', credential: 'YzYNCouZM1mhqhmseWk6'},
+            { url: 'turn:13.250.13.83:3478?transport=udp', credential: 'YzYNCouZM1mhqhmseWk6', username: 'YzYNCouZM1mhqhmseWk6'},
             { url: 'stun:stun.l.google.com:19302' }
           ]
         }
