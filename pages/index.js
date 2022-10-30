@@ -23,7 +23,14 @@ export default function Home() {
 
   useEffect(() => {
     import("peerjs").then(({ default: Peer }) => {
-      const peer = new Peer();
+      const peer = new Peer({
+        config: {
+          iceServers: [
+            { url: 'turn:13.250.13.83:3478?transport=udp', credential: 'YzYNCouZM1mhqhmseWk6'},
+            { url: 'stun:stun.l.google.com:19302' }
+          ]
+        }
+      });
 
       peer.on('open', (id) => {
         setId(id);
