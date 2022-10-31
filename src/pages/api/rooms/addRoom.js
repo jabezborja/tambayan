@@ -1,5 +1,5 @@
-import { addDocument } from "../../firebase/database";
-import Room from "../../models/room";
+import { addDocument } from "../../../firebase/database";
+import Room from "../../../models/room";
 
 export default function handler(req, res) {
 

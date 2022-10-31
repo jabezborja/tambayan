@@ -1,5 +1,4 @@
-import { getDocuments } from "../../firebase/database";
-import Room from "../../models/room";
+import { getDocuments } from "../../../firebase/database";
 
 export default function handler(req, res) {
 

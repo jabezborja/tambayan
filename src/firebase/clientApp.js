@@ -1,12 +1,12 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID
+  apiKey: "AIzaSyDyrPVv9SI7tHd1TGcT23s6A2HOByOCxtA",
+  authDomain: "chatapp-3da21.firebaseapp.com",
+  projectId: "chatapp-3da21",
+  storageBucket: "chatapp-3da21.appspot.com",
+  messagingSenderId: "415145317814",
+  appId: "1:415145317814:web:3087b9298ec89c66dd9d17"
 };
 
 // Initialize Firebase

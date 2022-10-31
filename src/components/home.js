@@ -1,32 +1,43 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch} from 'react-redux';
+import { signInAnon, getUser } from "../firebase/auth";
 
 const Home = () => {
+
+    const [ signedIn, setSignedIn ] = useState();
 
     const [ roomName, setRoomName ] = useState();
     const [ rooms, setRooms ] = useState([]);
 
-    const [ isCreateNewRoom, setIsCreateNewRoom ] = useState(false);
+    const user = useSelector(state => state.user.user);
 
     useEffect(() => {
-        fetch('/api/getRooms')
+        fetch('/api/rooms/getRooms')
             .then((res) => res.json())
             .then((data) => {
                 setRooms([]);
-                
+
                 data.rooms.forEach((room) => {
                     setRooms(val => [...val, room])
                 })
-            })
-    }, [])
+            });
+        
+        if (user) setSignedIn(true);
+        
+    }, [user])
 
-    const handleConnect = (e) => {
-        if (isCreateNewRoom) return setIsCreateNewRoom(false);
+    const handleStart = async (e) => {
+        const signIn = signInAnon();
+
+        signIn.then(() => {
+            if (signIn) setSignedIn(true);
+        });
     }
 
     const handleCreateRoom = (e) => {
-        if (!isCreateNewRoom) return setIsCreateNewRoom(true);
 
-        fetch('/api/addRoom', {
+        fetch('/api/rooms/addRoom', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,6 +56,7 @@ const Home = () => {
             })
     }
 
+
     return (
         <div className="w-fit mx-auto flex flex-col h-screen">
             <div className='mt-10 mb-10'>
@@ -59,41 +71,49 @@ const Home = () => {
             </div>
 
             <div className="w-3/12">
-                { !isCreateNewRoom
-                    ? <div>
-                        <div className='mt-3'>
-                            <label htmlFor="name">Your name</label>
-                            <input name="name" className='w-fit h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
-                        </div>
-                        <div className='mt-3'>
-                            <label htmlFor="peer-id">Enter Room ID</label>
-                            <input name="peer-id" className='w-fit h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
-                        </div>
+
+                <div>
+                    <div className='mt-3'>
+                        <label htmlFor="name">Your name</label>
+                        <input name="name" className='w-fit h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
                     </div>
-                    : <div>
-                        <div className='mt-3'>
-                            <label htmlFor="name">Room Name</label>
-                            <input value={roomName} onChange={(e) => setRoomName(e.target.value)} name="name" className='w-fit h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
-                        </div>
+                    {/* <div className='mt-3'>
+                        <label htmlFor="peer-id">Enter Room ID</label>
+                        <input name="peer-id" className='w-fit h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
+                    </div> */}
+                </div>
+
+                {/* <div>
+                    <div className='mt-3'>
+                        <label htmlFor="name">Room Name</label>
+                        <input value={roomName} onChange={(e) => setRoomName(e.target.value)} name="name" className='w-fit h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
                     </div>
-                }
+                </div> */}
 
                 <div className="w-max space-x-2 flex">
-                    <button className='mt-5 bg-[#222222] text-white p-2 rounded-lg' onClick={handleConnect}>Connect</button>
-                    <button className=' mt-5 bg-[#222222] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Room</button>
+                    <button className='mt-5 bg-[#222222] text-white p-2 rounded-lg' onClick={handleStart}>Start Looking</button>
+                    {signedIn
+                        ? <button className=' mt-5 bg-[#222222] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Room</button>
+                        : <div></div>
+                    }
                 </div>
             </div>
 
-            <div className="my-5 w-full">
-                <p className="text-xl font-bold text-start">Explore other public chatrooms</p>
+            { signedIn
+                ? <div className="my-5 w-full">
+                    <p className="text-xl font-bold text-start">Explore other public chatrooms</p>
 
-                <div className="mt-3 flex flex-col space-y-3">
-                    { rooms.map((room) => <div className="outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
-                        <p className="font-bold">{room.roomName}</p>
-                        <p>0/0</p>
-                    </div>) }
+                    <div className="mt-3 flex flex-col space-y-3">
+                        { rooms.map((room, i) => <Link key={i} href={`/chat?room=${room.id}`}>
+                            <div className="hover:pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
+                                <p className="font-bold">{room.roomName}</p>
+                                <p>0/0</p>
+                            </div>
+                        </Link>) }
+                    </div>
                 </div>
-            </div>
+                : <div></div>
+            }
         </div>
     );
 }

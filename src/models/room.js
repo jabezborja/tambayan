@@ -6,7 +6,11 @@ class Room {
     }
 
     toJson() {
-        return { roomName: this.roomName, dateCreated: this.dateCreated };
+        return {
+            roomName: this.roomName,
+            messages: [],
+            dateCreated: this.dateCreated
+        };
     }
 }
 
