@@ -57,10 +57,12 @@ const ChatView = () => {
         })
             .then((res) => res.json())
             .then((data) => console.log(data));
+
+        setMessage("");
     };
 
     return (
-        <div className='flex flex-col justify-center mx-3'>
+        <div className='bg-[#222222] flex flex-col justify-center'>
 
             <Head>
                 <title>Chat App</title>
@@ -70,8 +72,8 @@ const ChatView = () => {
 
             <div>
                 <div>
-                    <section className='fixed top-0 bg-white w-screen px-10 py-8 flex justify-between'>
-                        <p className='text-xl text-center'>{roomData ? roomData.roomName : "Loading..."}</p>
+                    <section className='fixed top-0 bg-[#222222] border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
+                        <p className='text-xl text-center text-white'>{roomData ? roomData.roomName : "Loading..."}</p>
                         <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
                     </section>
 
@@ -79,7 +81,7 @@ const ChatView = () => {
 
                         <div className='flex flex-row'>
                             <div
-                            className={`mt-1 bg-[#222222] text-white py-2 px-3 w-fit rounded-full`}
+                            className={`mt-1 bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-full`}
                             >
                             <p>Welcome to <span className='font-bold'>{roomData ? roomData.roomName : ""}</span>. Say Hello!</p>
                         </div>
@@ -88,11 +90,12 @@ const ChatView = () => {
                         {messages
                             ? messages.map((data, i) => <div key={i} className={`flex ${data.senderUid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
                                 <div className={`flex flex-col ${data.senderUid === user.uid ? 'items-end' : 'items-start'} mt-3`}>
-                                    <p className='text-sm'>{data.userName}</p>
+                                    <p className='text-white text-sm'>{data.userName}</p>
                                     <div
-                                        className={`mt-1 bg-[#222222] text-white py-2 px-3 w-fit rounded-full`}
+                                        className={`mt-1 bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-md`}
                                     >   
-                                        <p>{data.message}</p>
+                                        <p className='text-start text-md' dangerouslySetInnerHTML={{ __html: data.message.split(/\n\r?/g).join("<br />") }}></p>
+                                        <p className='text-[0.8rem]'>Nov, 2022</p>
                                     </div>
                                 </div>
                             </div>)
@@ -101,9 +104,9 @@ const ChatView = () => {
 
                     </section>
 
-                    <section className='fixed bottom-0 bg-white w-screen px-5 py-5'>
-                        <input value={message} onChange={(e) => setMessage(e.target.value)} className='w-9/12 h-10 px-2 border border-[#222222] rounded-md' type="textarea"></input>
-                        <button onClick={sendMessage} className='ml-2 bg-[#222222] text-white rounded-full px-3 py-1'>Send</button>
+                    <section className='fixed bottom-0 bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5'>
+                        <textarea placeholder='Write a message...' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-[#4d4d4d] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 h-10 px-2 rounded-md' type="textarea"></textarea>
+                        <button onClick={sendMessage} className='ml-2 bg-[#4d4d4d] text-white rounded-full px-3 py-1'>Send</button>
                     </section>
                 </div>
             </div>
