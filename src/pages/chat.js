@@ -1,12 +1,13 @@
 import Head from 'next/head';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { listenToDocument } from '../firebase/database';
 
 const ChatView = () => {
 
-    const roomId = Router.query['room'] || '';
+    const router = useRouter();
+    const roomId = router.query['room'] || '';
 
     const user = useSelector(state => state.user.user);
 
