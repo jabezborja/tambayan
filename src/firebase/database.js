@@ -7,7 +7,9 @@ const db = initializeFirestore(app, {
 });
 
 const addDocument = async (collectionName, doc) => {
-    return await addDoc(collection(db, collectionName), doc);
+    const { id } = await addDoc(collection(db, collectionName), doc);
+
+    return id;
 }
 
 const getDocuments = async (collectionName) => {

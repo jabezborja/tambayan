@@ -5,7 +5,7 @@ import Home from '../components/home';
 const App = () => {
 
   return (
-    <div className='h-screen flex flex-col justify-center mx-3'>
+    <div className='h-screen flex flex-col justify-center px-3 bg-[#222222]'>
 
       <Head>
         <title>Chat App</title>

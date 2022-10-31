@@ -7,8 +7,10 @@ export default function handler(req, res) {
 
     const room = new Room(req.body.roomName, req.body.dateCreated);
     
-    addDocument("rooms", room.toJson());
+    const roomDoc = addDocument("rooms", room.toJson());
 
-    res.status(200).send({ success: true });
+    roomDoc.then((id) => {
+        res.status(200).send({ roomId: id, success: true });
+    });
 
 }

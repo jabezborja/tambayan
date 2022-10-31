@@ -62,7 +62,7 @@ const ChatView = () => {
     };
 
     return (
-        <div className='bg-[#222222] flex flex-col justify-center'>
+        <div className='flex flex-col justify-center'>
 
             <Head>
                 <title>Chat App</title>
@@ -70,14 +70,14 @@ const ChatView = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div>
+            <div className='bg-[#222222] h-screen'>
                 <div>
-                    <section className='fixed top-0 bg-[#222222] border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
+                    <section className='fixed top-0 border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
                         <p className='text-xl text-center text-white'>{roomData ? roomData.roomName : "Loading..."}</p>
                         <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
                     </section>
 
-                    <section className='flex flex-col text-right mt-5 mx-3 mb-24'>
+                    <section className='flex flex-col text-right mt-28 mx-3 mb-24'>
 
                         <div className='flex flex-row'>
                             <div
