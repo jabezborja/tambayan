@@ -22,7 +22,7 @@ const CreateRoomModal = ({ state }) => {
             },
             body: JSON.stringify({
                 roomName: roomName,
-                roomOwnerId: user.uid,
+                roomOwner: user,
                 password: roomPassword || null,
                 isPublic: roomPassword ? false : true,
                 dateCreated: new Date()

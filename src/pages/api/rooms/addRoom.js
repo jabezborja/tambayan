@@ -1,4 +1,4 @@
-import { addDocument } from "../../../firebase/database";
+import { addDocument, updateDocument } from "../../../firebase/database";
 import Room from "../../../models/room";
 import Message from "../../../models/message";
 
@@ -6,16 +6,10 @@ export default function handler(req, res) {
 
     if (req.method !== "POST") return res.status(405);
 
-    const roomIntroduction = new Message(
-        { displayName: "Jabchat", email: "jabez.natsu@gmail.com", photoURL: "https://images.emojiterra.com/google/android-10/512px/1f916.png", uid: "jabchat-admin", verified: true },
-        "Welcome to " + req.body.roomName + ". Say Hello!",
-        new Date()
-    );
-
     const room = new Room(
         req.body.roomName,
-        req.body.roomOwnerId,
-        [roomIntroduction.toJson()],
+        req.body.roomOwner,
+        [],
         req.body.password,
         req.body.isPublic,
         req.body.dateCreated
@@ -24,6 +18,21 @@ export default function handler(req, res) {
     const roomDoc = addDocument("rooms", room.toJson());
 
     roomDoc.then((id) => {
+        const roomIntroduction = new Message(
+            {
+                displayName: "Lodi Rodulfo, ang Robot", 
+                email: "jabez.natsu@gmail.com",
+                photoURL: "https://images.emojiterra.com/google/android-10/512px/1f916.png",
+                uid: "rodulfo-the-admin",
+                verified: true,
+                moderator: true
+            },
+            "Hey, what's up mga lodii. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.netlify.app/chat?room=" + id + "</strong>",
+            new Date()
+        );
+
+        updateDocument("rooms", id, roomIntroduction.toJson());
+
         res.status(200).send({ roomId: id, success: true });
     });
 

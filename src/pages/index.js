@@ -50,7 +50,7 @@ const App = () => {
     <div className='flex flex-col justify-center px-3 overflow-auto'>
 
       <Head>
-        <title>Chat App</title>
+        <title>Tambayan: sa Gedli</title>
         <meta name="description" content="A new chat app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

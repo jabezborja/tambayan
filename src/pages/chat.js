@@ -75,7 +75,7 @@ const ChatView = () => {
             body: JSON.stringify({
                 roomId: room,
                 user: user,
-                moderator: user.uid === roomData.roomOwnerId,
+                moderator: user.uid === roomData.roomOwner.uid,
                 message: message
             })
         });
@@ -87,7 +87,7 @@ const ChatView = () => {
         <div className='flex flex-col justify-center h-screen'>
 
             <Head>
-                <title>Chat App</title>
+                <title>Tambayan: {roomData ? roomData.roomName : ' sa Gedli'}</title>
                 <meta name="description" content="A new chat app" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
@@ -96,7 +96,7 @@ const ChatView = () => {
                 <p className='text-xl text-center text-white'>
                     {roomData
                         ? roomData.isPublic
-                            ? roomData.roomName
+                            ? <p>{roomData.roomName} by <span className='font-bold'>{roomData.roomOwner.displayName}</span></p>
                             : `${roomData.roomName} - Private Tambayan`
                         : "Loading..."
                     }
