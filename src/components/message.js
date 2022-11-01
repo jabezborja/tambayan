@@ -1,8 +1,5 @@
-import { useSelector } from "react-redux";
 
-const Message = ({ data }) => {
-
-    const user = useSelector(state => state.user.user);
+const Message = ({ data, user }) => {
 
     return (
         <div className={`flex ${data.senderUid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>

@@ -8,22 +8,25 @@ import { listenToDocument } from '../firebase/database';
 const ChatView = () => {
 
     const router = useRouter();
-    const roomId = router.query['room'] || '';
+    const { room } = router.query;
 
     const user = useSelector(state => state.user.user);
 
     const [ roomData, setRoomData ] = useState();
     const [ messages, setMessages ] = useState([]);
 
-    const [ message, setMessage ] = useState();
+    const [ message, setMessage ] = useState('');
 
-    const autoScroller = useRef();
+    const autoScroller = useRef(null);
 
-    useEffect(() => {        
+    useEffect(() => {
+
+        if (!room) return;
+
         fetch('/api/rooms/getRoom', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ "roomId": roomId })
+            body: JSON.stringify({ "roomId": room })
         })
             .then((res) => res.json())
             .then((data) => {
@@ -39,8 +42,8 @@ const ChatView = () => {
 
             autoScroller.current.scrollIntoView({ behavior: 'smooth' })
 
-        }, "rooms", roomId);
-    }, []);
+        }, "rooms", room);
+    }, [room]);
 
     const sendMessage = (e) => {
 
@@ -49,7 +52,7 @@ const ChatView = () => {
         // // Temporarily insert the message sent immediately so the user 
         // // won't have to wait for the database response before receiving their messages.
         // setMessages(old => [...old, {
-        //     roomId: roomId,
+        //     room: room,
         //     userName: user.displayName,
         //     senderUid: user.uid,
         //     message: message
@@ -59,7 +62,7 @@ const ChatView = () => {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                roomId: roomId,
+                roomId: room,
                 userName: user.displayName,
                 userId: user.uid,
                 message: message
@@ -96,10 +99,7 @@ const ChatView = () => {
 
             <div className='bg-[#222222] overflow-auto h-5/6 my-16'>
                 <div className='flex flex-col text-right mx-3 my-6'>
-                    {messages
-                        ? messages.map((message, i) => <Message key={i} data={message} />)
-                        : <></>
-                    }
+                    { messages.map((message, i) => <Message key={i} data={message} user={user} />) }
                 </div>
 
                 <div ref={autoScroller}></div>
