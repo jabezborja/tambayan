@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { signInAnon } from "../firebase/auth";
+import { signOutAccount, signInAnon, signInWithGithub } from "../firebase/auth";
 
 const Home = () => {
 
@@ -30,11 +30,27 @@ const Home = () => {
         
     }, [user])
 
-    const handleStart = async (e) => {
+    const handleAnonymous = async (e) => {
         const signIn = signInAnon();
 
         signIn.then(() => {
             if (signIn) setSignedIn(true);
+        });
+    }
+
+    const handleContinueWithGithub = async (e) => {
+        const signIn = signInWithGithub();
+
+        signIn.then(() => {
+            if (signIn) setSignedIn(true);
+        });
+    }
+
+    const handleLogout = async (e) => {
+        const logout = signOutAccount();
+
+        logout.then(() => {
+            if (logout) setSignedIn(false);
         });
     }
 
@@ -92,8 +108,14 @@ const Home = () => {
 
                 <div className="w-max space-x-2 flex">
                     {!signedIn
-                        ? <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleStart}>Join the Parties!</button>
-                        : <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Room</button>
+                        ? <div className="space-x-2">
+                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleAnonymous}>Join the Parties!</button>
+                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleContinueWithGithub}>Continue with GitHub</button>
+                        </div>
+                        : <div className="space-x-2">
+                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Room</button>
+                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>
+                        </div>
                     }
                 </div>
             </div>
@@ -111,7 +133,7 @@ const Home = () => {
                         </Link>) }
                     </div>
                 </div>
-                : <p className="text-white mt-3">Loading parties...</p>
+                : <></>
             }
         </div>
     );

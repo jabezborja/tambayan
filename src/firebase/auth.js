@@ -1,12 +1,43 @@
-import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, signInAnonymously, onAuthStateChanged, GithubAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { setUser } from '../slices/userSlice';
 import store from '../store';
 import app from './clientApp';
 
 const auth = getAuth(app);
+const githubProvider = new GithubAuthProvider();
 
 const signInAnon = async () => {
     await signInAnonymously(auth)
+        .then(() => {
+            return true;
+        })
+        .catch((err) => {
+            console.log(err.code, err.message);
+
+            return false;
+        })
+}
+
+const signInWithGithub = async () => {
+    await signInWithPopup(auth, githubProvider)
+        .then((result) => {
+
+            // This line of code can be used to access more the GitHub API
+            // const credential = GithubAuthProvider.credentialFromResult(result);
+            // const token = credential.accessToken;
+
+            return true;
+
+        })
+        .catch((err) => {
+            console.log(err.code, err.message);
+
+            return false;
+        })
+}
+
+const signOutAccount = async () => {
+    await signOut(auth)
         .then(() => {
             return true;
         })
@@ -25,4 +56,4 @@ onAuthStateChanged(auth, (u) => {
     }
 });
 
-export { signInAnon, auth };
+export { signInAnon, signOutAccount, signInWithGithub, auth };
