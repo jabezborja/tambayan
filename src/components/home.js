@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { signOutAccount, signInAnon, signInWithGithub, auth } from "../firebase/auth";
+import Room from "./room";
 
 const Home = () => {
 
@@ -11,6 +12,8 @@ const Home = () => {
     const [ signedIn, setSignedIn ] = useState();
 
     const [ roomName, setRoomName ] = useState();
+    const [ roomPassword, setRoomPassword ] = useState();
+
     const [ rooms, setRooms ] = useState([]);
 
     const user = useSelector(state => state.user.user);
@@ -64,6 +67,9 @@ const Home = () => {
             },
             body: JSON.stringify({
                 roomName: roomName,
+                roomOwner: user.displayName,
+                password: roomPassword || null,
+                isPublic: roomPassword ? false : true,
                 dateCreated: new Date()
             })
         })
@@ -95,26 +101,25 @@ const Home = () => {
                     ? <div>
                         <div>
                             <div className='mt-3 text-white'>
-                                <label htmlFor="name">Room Name</label><br />
+                                <label htmlFor="name">Chatroom Name</label><br />
                                 <input placeholder="Let's party chat!" value={roomName} onChange={(e) => setRoomName(e.target.value)} name="name" className='bg-[#4d4d4d] w-fit h-10 px-2 mt-1 rounded-md' type="textarea"></input>
+                            </div>
+                            <div className='mt-3 text-white'>
+                                <label htmlFor="name">Chatroom Password</label><br />
+                                <input placeholder="Leave empty if Public" value={roomPassword} onChange={(e) => setRoomPassword(e.target.value)} name="name" className='bg-[#4d4d4d] w-fit h-10 px-2 mt-1 rounded-md' type="textarea"></input>
                             </div>
                         </div>
 
                         <div className="w-max space-x-2 flex">
-                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Room</button>
+                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Chatroom</button>
                             <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>
                         </div>
 
                         <div className="my-5 w-full text-white">
-                            <p className="text-xl font-bold text-start">Explore other public chatrooms</p>
+                            <p className="text-xl font-bold text-start">Explore other public Chatrooms</p>
 
                             <div className="mt-3 flex flex-col space-y-3">
-                                { rooms.map((room, i) => <Link key={i} href={`/chat?room=${room.id}`}>
-                                    <div className="hover:pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
-                                        <p className="font-bold">{room.roomName}</p>
-                                        <p>Click to join room</p>
-                                    </div>
-                                </Link>) }
+                                { rooms.map((room, i) => <Room key={i} room={room} />) }
                             </div>
                         </div>
                     </div>

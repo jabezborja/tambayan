@@ -16,6 +16,9 @@ export default function handler(req, res) {
             rooms.push({
                 id: room.id,
                 roomName: data.roomName,
+                roomOwner: data.roomOwner,
+                isPublic: data.isPublic,
+                password: data.password,
                 dateCreated: data.dateCreated
             });
         });

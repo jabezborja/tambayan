@@ -80,7 +80,14 @@ const ChatView = () => {
             </Head>
 
             <section className='fixed h-fit bg-[#222222] top-0 border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
-                <p className='text-xl text-center text-white'>{roomData ? roomData.roomName : "Loading..."}</p>
+                <p className='text-xl text-center text-white'>
+                    {roomData
+                        ? roomData.isPublic
+                            ? roomData.roomName
+                            : `${roomData.roomName} - Private Chatroom`
+                        : "Loading..."
+                    }
+                </p>
                 <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
             </section>
 

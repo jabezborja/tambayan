@@ -13,7 +13,14 @@ export default function handler(req, res) {
         Date()
     );
 
-    const room = new Room(req.body.roomName, [roomIntroduction.toJson()], req.body.dateCreated);
+    const room = new Room(
+        req.body.roomName,
+        req.body.roomOwner,
+        [roomIntroduction.toJson()],
+        req.body.password,
+        req.body.isPublic,
+        req.body.dateCreated
+    );
     
     const roomDoc = addDocument("rooms", room.toJson());
 
