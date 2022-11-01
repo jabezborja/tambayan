@@ -49,7 +49,7 @@ const App = () => {
 
   return (
 
-    <div className='flex flex-col justify-center px-3 bg-[#222222] overflow-auto'>
+    <div className='flex flex-col justify-center px-3 overflow-auto'>
 
       <Head>
         <title>Chat App</title>
