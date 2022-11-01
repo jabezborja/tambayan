@@ -1,14 +1,15 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
-import { signOutAccount, signInWithGithub, auth } from "../firebase/auth";
+import { signOutAccount, signInWithGithub, auth, signInWithFacebook } from "../firebase/auth";
 
 import CreateRoomModal from "../components/createRoomModal";
 import Room from "../components/room";
 
 const App = () => {
 
-  const [ signedIn, setSignedIn ] = useState();
+  const [ signedIn, setSignedIn ] = useState(false);
+  const [ signingIn, setSigningIn ] = useState(false);
 
   const [ rooms, setRooms ] = useState([]);
   const [ showCreateRoomModal, setShowCreateRoomModal ] = useState(false);
@@ -26,17 +27,15 @@ const App = () => {
               })
           });
 
-      if (user) setSignedIn(true)
+      if (user) {
+        setSigningIn(false);
+        setSignedIn(true);
+      }
       
   }, [user])
 
-  const handleContinueWithGithub = async (e) => {
-      const signIn = signInWithGithub();
-
-      signIn.then(() => {
-          if (signIn) setSignedIn(true);
-      });
-  }
+  const handleContinueWithGithub = async e => { signInWithGithub(); setSigningIn(true); }
+  const handleContinueWithFacebook = async e => { signInWithFacebook(); setSigningIn(true); }
 
   const handleLogout = async (e) => {
       const logout = signOutAccount();
@@ -90,9 +89,13 @@ const App = () => {
                       </div>
                   </div>
                   : <div>
-                      <div className="w-max space-x-2 flex">
-                          <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleContinueWithGithub}>Continue with GitHub</button>
-                      </div>
+                      {!signingIn
+                        ? <div className="w-max space-x-2 flex">
+                            <button className='mt-5 bg-[#3b5998] text-white p-2 rounded-lg' onClick={handleContinueWithFacebook}>Continue with Facebook</button>
+                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleContinueWithGithub}>Continue with GitHub</button>
+                        </div>
+                        : <p className="text-white font-bold text-2xl mt-5">Loading...</p>
+                      }
                   </div>
               }
           </div>

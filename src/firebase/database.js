@@ -15,8 +15,6 @@ const addDocument = async (collectionName, doc) => {
 const setDocument = async (collectionName, document, id) => {
     const docRef = doc(db, collectionName, id);
 
-    if (docRef) return;
-
     return await setDoc(docRef, document);
 }
 

@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged, GithubAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithPopup, signOut, GithubAuthProvider, FacebookAuthProvider } from 'firebase/auth';
 import User from '../models/user';
 import { setUser } from '../slices/userSlice';
 import store from '../store';
@@ -6,7 +6,29 @@ import app from './clientApp';
 import { getDocument, setDocument } from './database';
 
 const auth = getAuth(app);
+const facebookProvider = new FacebookAuthProvider();
 const githubProvider = new GithubAuthProvider();
+
+const signInWithFacebook = async () => {
+    await signInWithPopup(auth, facebookProvider)
+        .then((result) => {
+
+            const userResult = result.user;
+            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL);
+
+            console.log(userResult)
+
+            setDocument("users", user.toJson(), userResult.uid);
+
+            return true;
+
+        })
+        .catch((err) => {
+            console.log(err.code, err.message);
+
+            return false;
+        })
+}
 
 const signInWithGithub = async () => {
     await signInWithPopup(auth, githubProvider)
@@ -41,6 +63,8 @@ const signOutAccount = async () => {
 
 onAuthStateChanged(auth, (u) => {
 
+    console.log(u)
+
     if (!u) return store.dispatch(setUser(null));
 
     const user = getDocument("users", u.uid);
@@ -51,4 +75,4 @@ onAuthStateChanged(auth, (u) => {
     })
 });
 
-export { signOutAccount, signInWithGithub, auth };
+export { signOutAccount, signInWithFacebook, signInWithGithub, auth };
