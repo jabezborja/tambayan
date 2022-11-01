@@ -1,4 +1,4 @@
-import { initializeFirestore, doc, addDoc, updateDoc, getDoc, getDocs, collection, onSnapshot, arrayUnion} from 'firebase/firestore';
+import { initializeFirestore, doc, addDoc, updateDoc, getDoc, getDocs, collection, onSnapshot, arrayUnion, setDoc} from 'firebase/firestore';
 
 import app from './clientApp';
 
@@ -10,6 +10,14 @@ const addDocument = async (collectionName, doc) => {
     const { id } = await addDoc(collection(db, collectionName), doc);
 
     return id;
+}
+
+const setDocument = async (collectionName, document, id) => {
+    const docRef = doc(db, collectionName, id);
+
+    if (docRef) return;
+
+    return await setDoc(docRef, document);
 }
 
 const getDocuments = async (collectionName) => {
@@ -33,8 +41,6 @@ const updateDocument = async (collectionName, documentId, update) => {
         
         return [ true, null ];
     } catch (e) {
-        console.log(e);
-
         return [ false, e ];
     }
 }
@@ -47,4 +53,4 @@ const listenToDocument = (func, collectionName, documentId) => {
     return unsub;
 }
 
-export { db, addDocument, getDocuments, getDocument, updateDocument, listenToDocument }
+export { db, addDocument, setDocument, getDocuments, getDocument, updateDocument, listenToDocument }

@@ -1,7 +1,9 @@
 import { getAuth, onAuthStateChanged, GithubAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import User from '../models/user';
 import { setUser } from '../slices/userSlice';
 import store from '../store';
 import app from './clientApp';
+import { getDocument, setDocument } from './database';
 
 const auth = getAuth(app);
 const githubProvider = new GithubAuthProvider();
@@ -10,9 +12,10 @@ const signInWithGithub = async () => {
     await signInWithPopup(auth, githubProvider)
         .then((result) => {
 
-            // This line of code can be used to access more the GitHub API
-            // const credential = GithubAuthProvider.credentialFromResult(result);
-            // const token = credential.accessToken;
+            const userResult = result.user;
+            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL);
+
+            setDocument("users", user.toJson(), userResult.uid);
 
             return true;
 
@@ -37,11 +40,15 @@ const signOutAccount = async () => {
 }
 
 onAuthStateChanged(auth, (u) => {
-    if (u) {
-        store.dispatch(setUser(u));
-    } else {
-        store.dispatch(setUser(null));
-    }
+
+    if (!u) return store.dispatch(setUser(null));
+
+    const user = getDocument("users", u.uid);
+
+    user.then((data) => {
+        console.log(data);
+        store.dispatch(setUser(data))
+    })
 });
 
 export { signOutAccount, signInWithGithub, auth };

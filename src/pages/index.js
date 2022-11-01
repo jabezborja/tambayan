@@ -26,10 +26,9 @@ const App = () => {
               })
           });
 
-      if (auth.currentUser) setSignedIn(true);
-      if (!user) setSignedIn(false)
+      if (user) setSignedIn(true)
       
-  }, [auth.currentUser])
+  }, [user])
 
   const handleContinueWithGithub = async (e) => {
       const signIn = signInWithGithub();
@@ -76,7 +75,7 @@ const App = () => {
               { signedIn
                   ? <div>
                       <div className="mt-4">
-                        <p className="text-3xl font-bold text-white">Hello, {user.displayName} 👋</p>
+                        {user ? <p className="text-3xl font-bold text-white">Hello, {user.displayName} 👋</p> : ''}
                         <div className="w-max space-x-2 flex">
                             <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={() => setShowCreateRoomModal(true)}>Create New Chatroom</button>
                             <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>

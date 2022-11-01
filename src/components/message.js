@@ -4,6 +4,8 @@ const Message = ({ data, user }) => {
 
     const dateSent = timeDate(data.dateSent.seconds);
 
+    console.log(user);
+
     return (
         <div className={`flex ${data.senderUid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className={`flex flex-col ${data.senderUid === user.uid ? 'items-end' : 'items-start'} mt-3`}>
