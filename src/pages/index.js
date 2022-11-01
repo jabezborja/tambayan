@@ -59,14 +59,10 @@ const App = () => {
 
       <div className="mt-10 w-fit mx-auto flex flex-col">
 
-          <div>
-              <p className='text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#DC2424] to-[#4A569D]'>Party Chat App</p>
+          <div className="text-center">
+              <p className='text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#DC2424] to-[#4A569D]'>Tambayan: sa Gedli</p>
               <p className='text-xl text-white'>
-              by <a className='group transition-all duration-300 ease-in-out font-bold text-blue-600' href='https://jabeztorre.ga' target="_blank" rel="noreferrer">
-                  <span className='bg-left-bottom bg-gradient-to-r from-blue-500 to-blue-500 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out'>
-                  Jabez Torre
-                  </span>
-              </a>
+                An open-source tambayan chat app. Talk with people, make more friends.
               </p>
           </div>
 
@@ -76,12 +72,12 @@ const App = () => {
                       <div className="mt-4">
                         {user ? <p className="text-3xl font-bold text-white">Hello, {user.displayName} 👋</p> : ''}
                         <div className="w-max space-x-2 flex">
-                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={() => setShowCreateRoomModal(true)}>Create New Chatroom</button>
+                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={() => setShowCreateRoomModal(true)}>Create New Tambayan</button>
                             <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>
                         </div>
                       </div>
                       <div className="my-5 w-full text-white">
-                          <p className="text-xl font-bold text-start">Explore other public Chatrooms</p>
+                          <p className="text-xl font-bold text-start">Explore other public tambayan</p>
 
                           <div className="mt-3 flex flex-col space-y-3">
                               { rooms.map((room, i) => <Room key={i} room={room} />) }
@@ -90,10 +86,15 @@ const App = () => {
                   </div>
                   : <div>
                       {!signingIn
-                        ? <div className="w-max space-x-2 flex">
-                            <button className='mt-5 bg-[#3b5998] text-white p-2 rounded-lg' onClick={handleContinueWithFacebook}>Continue with Facebook</button>
-                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleContinueWithGithub}>Continue with GitHub</button>
-                        </div>
+                        ? <div className="mt-20 bg-[#292929] w-full py-10 rounded-md">
+                            <div className="w-10/12 mx-auto">
+                              <p className="text-center text-4xl text-white font-bold">Create an Account</p>
+                              <div className="mt-8 flex flex-col space-y-2">
+                                <button className='bg-[#4572d3] text-white p-2 rounded-lg h-11 font-bold' onClick={handleContinueWithFacebook}>Facebook</button>
+                                <button className='bg-[#333333] text-white p-2 rounded-lg h-11 font-bold' onClick={handleContinueWithGithub}>GitHub</button>
+                              </div>
+                            </div>
+                          </div>
                         : <p className="text-white font-bold text-2xl mt-5">Loading...</p>
                       }
                   </div>

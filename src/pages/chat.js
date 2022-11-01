@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { listenToDocument } from '../firebase/database';
 import MessageView from '../components/message';
-import Message from '../models/message';
 
 const ChatView = () => {
 
@@ -98,7 +97,7 @@ const ChatView = () => {
                     {roomData
                         ? roomData.isPublic
                             ? roomData.roomName
-                            : `${roomData.roomName} - Private Chatroom`
+                            : `${roomData.roomName} - Private Tambayan`
                         : "Loading..."
                     }
                 </p>

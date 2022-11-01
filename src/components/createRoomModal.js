@@ -54,16 +54,16 @@ const CreateRoomModal = ({ state }) => {
                         </svg>
                         </div>
                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <h3 className="text-lg font-medium leading-6 text-white" id="modal-title">Create a Chatroom.</h3>
+                        <h3 className="text-lg font-medium leading-6 text-white" id="modal-title">Create new tambayan.</h3>
                         <div className="mt-2">
-                            <p className="text-sm text-[#d4d4d4]">Throw out a chat party by creating a new chatroom. Invite your friends and have fun!</p>
+                            <p className="text-sm text-[#d4d4d4]">Throw out a chat party by creating a new tambayan. Invite your friends and have fun!</p>
                             <div>
                                 <div className='mt-3 text-white'>
-                                    <label htmlFor="name">Chatroom Name</label><br />
+                                    <label htmlFor="name">Tambayan Name</label><br />
                                     <input placeholder="Relationship talks 🤖" value={roomName} onChange={(e) => setRoomName(e.target.value)} name="name" className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
                                 </div>
                                 <div className='mt-3 text-white'>
-                                    <label htmlFor="name">Chatroom Password</label><br />
+                                    <label htmlFor="name">Tambayan Password</label><br />
                                     <input placeholder="Leave empty if Public" value={roomPassword} onChange={(e) => setRoomPassword(e.target.value)} name="name" className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
                                 </div>
                             </div>
