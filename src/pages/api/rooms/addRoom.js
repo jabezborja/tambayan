@@ -1,11 +1,19 @@
 import { addDocument } from "../../../firebase/database";
 import Room from "../../../models/room";
+import Message from "../../../models/message";
 
 export default function handler(req, res) {
 
     if (req.method !== "POST") return res.status(405);
 
-    const room = new Room(req.body.roomName, req.body.dateCreated);
+    const roomIntroduction = new Message(
+        "Jabchat",
+        "jabchat-admin",
+        "Welcome to " + req.body.roomName + ". Say Hello!",
+        Date()
+    );
+
+    const room = new Room(req.body.roomName, [roomIntroduction.toJson()], req.body.dateCreated);
     
     const roomDoc = addDocument("rooms", room.toJson());
 

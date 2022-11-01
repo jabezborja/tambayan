@@ -38,9 +38,12 @@ const ChatView = () => {
     }, []);
 
     const sendMessage = (e) => {
+
+        // Temporarily insert the message sent immediately so the user 
+        // won't have to wait for the database response before receiving their messages.
         setMessages(old => [...old, {
             roomId: roomId,
-            userName: "Unknown Alienoid",
+            userName: user.displayName,
             senderUid: user.uid,
             message: message
         }])
@@ -50,7 +53,7 @@ const ChatView = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 roomId: roomId,
-                userName: "Unknown Alienoid",
+                userName: user.displayName,
                 userId: user.uid,
                 message: message
             })
@@ -78,15 +81,6 @@ const ChatView = () => {
                     </section>
 
                     <section className='flex flex-col text-right mt-28 mx-3 mb-24'>
-
-                        <div className='flex flex-row'>
-                            <div
-                            className={`mt-1 bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-full`}
-                            >
-                            <p>Welcome to <span className='font-bold'>{roomData ? roomData.roomName : ""}</span>. Say Hello!</p>
-                        </div>
-                        </div>
-
                         {messages
                             ? messages.map((data, i) => <div key={i} className={`flex ${data.senderUid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
                                 <div className={`flex flex-col ${data.senderUid === user.uid ? 'items-end' : 'items-start'} mt-3`}>

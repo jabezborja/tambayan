@@ -89,52 +89,42 @@ const Home = () => {
                 </p>
             </div>
 
-            <div className="w-3/12">
-
-                <div>
-                    {!signedIn
-                        ? <div className='mt-3 text-white'>
-                            <label htmlFor="name">Your name</label>
-                            <input placeholder="Juan Dela Cruz" name="name" className='bg-[#4d4d4d] w-fit h-10 px-2 mt-1 rounded-md' type="textarea"></input>
-                        </div>
-                        : <div>
+            <div>
+                { signedIn
+                    ? <div>
+                        <div>
                             <div className='mt-3 text-white'>
-                                <label htmlFor="name">Room Name</label>
+                                <label htmlFor="name">Room Name</label><br />
                                 <input placeholder="Let's party chat!" value={roomName} onChange={(e) => setRoomName(e.target.value)} name="name" className='bg-[#4d4d4d] w-fit h-10 px-2 mt-1 rounded-md' type="textarea"></input>
                             </div>
                         </div>
-                    }
-                </div>
 
-                <div className="w-max space-x-2 flex">
-                    {!signedIn
-                        ? <div className="space-x-2">
-                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleAnonymous}>Join the Parties!</button>
-                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleContinueWithGithub}>Continue with GitHub</button>
-                        </div>
-                        : <div className="space-x-2">
+                        <div className="w-max space-x-2 flex">
                             <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleCreateRoom}>Create New Room</button>
                             <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>
                         </div>
-                    }
-                </div>
+
+                        <div className="my-5 w-full text-white">
+                            <p className="text-xl font-bold text-start">Explore other public chatrooms</p>
+
+                            <div className="mt-3 flex flex-col space-y-3">
+                                { rooms.map((room, i) => <Link key={i} href={`/chat?room=${room.id}`}>
+                                    <div className="hover:pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
+                                        <p className="font-bold">{room.roomName}</p>
+                                        <p>Click to join room</p>
+                                    </div>
+                                </Link>) }
+                            </div>
+                        </div>
+                    </div>
+                    : <div>
+                        <div className="w-max space-x-2 flex">
+                            <button className='mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleContinueWithGithub}>Continue with GitHub</button>
+                        </div>
+                    </div>
+                }
             </div>
 
-            { signedIn
-                ? <div className="my-5 w-full text-white">
-                    <p className="text-xl font-bold text-start">Explore other public chatrooms</p>
-
-                    <div className="mt-3 flex flex-col space-y-3">
-                        { rooms.map((room, i) => <Link key={i} href={`/chat?room=${room.id}`}>
-                            <div className="hover:pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
-                                <p className="font-bold">{room.roomName}</p>
-                                <p>Click to join room</p>
-                            </div>
-                        </Link>) }
-                    </div>
-                </div>
-                : <></>
-            }
         </div>
     );
 }

@@ -1,14 +1,15 @@
 
 class Room {
-    constructor(roomName, dateCreated) {
+    constructor(roomName, messages, dateCreated) {
         this.roomName = roomName;
+        this.messages = messages;
         this.dateCreated = dateCreated;
     }
 
     toJson() {
         return {
             roomName: this.roomName,
-            messages: [],
+            messages: this.messages,
             dateCreated: this.dateCreated
         };
     }
