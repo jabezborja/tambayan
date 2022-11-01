@@ -22,6 +22,12 @@ const ChatView = () => {
 
     useEffect(() => {
 
+        if (!user) {
+            alert("Please sign in to continue.");
+
+            return () => router.push('/');
+        }
+
         if (!room) return;
 
         fetch('/api/rooms/getRoom', {
