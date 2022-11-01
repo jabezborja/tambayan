@@ -5,6 +5,8 @@ export default function handler(req, res) {
 
     if (req.method !== "POST") return res.status(405);
 
+    req.body.user['moderator'] = req.body.moderator;
+
     const message = new Message(req.body.user, req.body.message, new Date());
     
     updateDocument("rooms", req.body.roomId, message.toJson())

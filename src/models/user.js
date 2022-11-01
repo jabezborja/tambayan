@@ -12,7 +12,8 @@ class User {
             uid: this.uid,
             displayName: this.displayName,
             email: this.email,
-            photoURL: this.photoURL
+            photoURL: this.photoURL,
+            verified: false,
         };
     }
 }

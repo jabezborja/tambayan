@@ -76,6 +76,7 @@ const ChatView = () => {
             body: JSON.stringify({
                 roomId: room,
                 user: user,
+                moderator: user.uid === roomData.roomOwnerId,
                 message: message
             })
         });

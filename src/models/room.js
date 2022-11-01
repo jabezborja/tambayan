@@ -1,8 +1,8 @@
 
 class Room {
-    constructor(roomName, roomOwner, messages, password, isPublic, dateCreated) {
+    constructor(roomName, roomOwnerId, messages, password, isPublic, dateCreated) {
         this.roomName = roomName;
-        this.roomOwner = roomOwner;
+        this.roomOwnerId = roomOwnerId;
         this.messages = messages;
         this.password = password;
         this.isPublic = isPublic;
@@ -12,7 +12,7 @@ class Room {
     toJson() {
         return {
             roomName: this.roomName,
-            roomOwner: this.roomOwner,
+            roomOwner: this.roomOwnerId,
             messages: this.messages,
             password: this.password,
             isPublic: this.isPublic,
