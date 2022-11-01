@@ -49,7 +49,7 @@ const App = () => {
 
   return (
 
-    <div className='h-screen flex flex-col justify-center px-3 bg-[#222222] overflow-auto pt-20'>
+    <div className='flex flex-col justify-center px-3 bg-[#222222] overflow-auto'>
 
       <Head>
         <title>Chat App</title>
@@ -57,11 +57,11 @@ const App = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="w-fit mx-auto flex flex-col">
+      { showCreateRoomModal ? <CreateRoomModal state={setShowCreateRoomModal} /> : <></> }
 
-          { showCreateRoomModal ? <CreateRoomModal state={setShowCreateRoomModal} /> : <></> }
+      <div className="mt-10 w-fit mx-auto flex flex-col">
 
-          <div className='mt-10 mb-10'>
+          <div>
               <p className='text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#DC2424] to-[#4A569D]'>Party Chat App</p>
               <p className='text-xl text-white'>
               by <a className='group transition-all duration-300 ease-in-out font-bold text-blue-600' href='https://jabeztorre.ga' target="_blank" rel="noreferrer">
@@ -75,9 +75,12 @@ const App = () => {
           <div>
               { signedIn
                   ? <div>
-                      <div className="w-max space-x-2 flex">
-                        <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={() => setShowCreateRoomModal(true)}>Create New Chatroom</button>
-                        <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>
+                      <div className="mt-4">
+                        <p className="text-3xl font-bold text-white">Hello, {user.displayName} 👋</p>
+                        <div className="w-max space-x-2 flex">
+                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={() => setShowCreateRoomModal(true)}>Create New Chatroom</button>
+                            <button className=' mt-5 bg-[#4d4d4d] text-white p-2 rounded-lg' onClick={handleLogout}>Logout</button>
+                        </div>
                       </div>
                       <div className="my-5 w-full text-white">
                           <p className="text-xl font-bold text-start">Explore other public Chatrooms</p>
