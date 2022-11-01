@@ -1,16 +1,14 @@
 
 class Message {
-    constructor(userName, senderUid, message, dateSent) {
-        this.userName = userName;
-        this.senderUid = senderUid;
+    constructor(user, message, dateSent) {
+        this.user = user;
         this.message = message;
         this.dateSent = dateSent;
     }
 
     toJson() {
         return {
-            userName: this.userName,
-            senderUid: this.senderUid,
+            user: this.user,
             message: this.message,
             dateSent: this.dateSent
         };

@@ -2,8 +2,9 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Message from '../components/message';
 import { listenToDocument } from '../firebase/database';
+import MessageView from '../components/message';
+import Message from '../models/message';
 
 const ChatView = () => {
 
@@ -34,15 +35,20 @@ const ChatView = () => {
                 setMessages(data.messages)
             });
 
-        listenToDocument((doc) => {
+        const unsub = listenToDocument((doc) => {
             var data = doc.data();
             
             setMessages(data.messages)
             setRoomData(data)
-
+    
             autoScroller.current.scrollIntoView({ behavior: 'smooth' })
-
+    
         }, "rooms", room);
+
+        return () => {
+            unsub();
+        }
+
     }, [room]);
 
     const sendMessage = (e) => {
@@ -63,15 +69,10 @@ const ChatView = () => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 roomId: room,
-                userName: user.displayName,
-                userId: user.uid,
+                user: user,
                 message: message
             })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-            });
+        });
 
         setMessage("");
     };
@@ -99,7 +100,7 @@ const ChatView = () => {
 
             <div className='bg-[#222222] overflow-auto h-5/6 my-16'>
                 <div className='flex flex-col text-right mx-3 my-6'>
-                    { messages.map((message, i) => <Message key={i} data={message} user={user} />) }
+                    { messages.map((message, i) => <MessageView key={i} data={message} user={user} />) }
                 </div>
 
                 <div ref={autoScroller}></div>

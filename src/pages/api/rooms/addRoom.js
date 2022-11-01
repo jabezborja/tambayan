@@ -7,10 +7,9 @@ export default function handler(req, res) {
     if (req.method !== "POST") return res.status(405);
 
     const roomIntroduction = new Message(
-        "Jabchat",
-        "jabchat-admin",
+        { displayName: "Jabchat", email: "jabez.natsu@gmail.com", photoURL: "https://images.emojiterra.com/google/android-10/512px/1f916.png", uid: "jabchat-admin" },
         "Welcome to " + req.body.roomName + ". Say Hello!",
-        Date()
+        new Date()
     );
 
     const room = new Room(
