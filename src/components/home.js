@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from 'react-redux';
-import { signOutAccount, signInAnon, signInWithGithub } from "../firebase/auth";
+import { useSelector, useDispatch } from 'react-redux';
+import { signOutAccount, signInAnon, signInWithGithub, auth } from "../firebase/auth";
 
 const Home = () => {
 
@@ -25,10 +25,11 @@ const Home = () => {
                     setRooms(val => [...val, room])
                 })
             });
+
+        if (auth.currentUser) setSignedIn(true);
+        if (!user) setSignedIn(false)
         
-        if (user) setSignedIn(true);
-        
-    }, [user])
+    }, [auth.currentUser])
 
     const handleAnonymous = async (e) => {
         const signIn = signInAnon();

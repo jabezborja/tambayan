@@ -28,7 +28,15 @@ const getDocument = async (collectionName, documentId) => {
 const updateDocument = async (collectionName, documentId, update) => {
     const ref = doc(db, collectionName, documentId);
 
-    await updateDoc(ref, { messages: arrayUnion(update) });
+    try {
+        await updateDoc(ref, { messages: arrayUnion(update) });
+        
+        return [ true, null ];
+    } catch (e) {
+        console.log(e);
+
+        return [ false, e ];
+    }
 }
 
 const listenToDocument = (func, collectionName, documentId) => {

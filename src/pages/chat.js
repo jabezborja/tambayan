@@ -1,7 +1,8 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import Message from '../components/message';
 import { listenToDocument } from '../firebase/database';
 
 const ChatView = () => {
@@ -15,6 +16,8 @@ const ChatView = () => {
     const [ messages, setMessages ] = useState([]);
 
     const [ message, setMessage ] = useState();
+
+    const autoScroller = useRef();
 
     useEffect(() => {        
         fetch('/api/rooms/getRoom', {
@@ -39,14 +42,16 @@ const ChatView = () => {
 
     const sendMessage = (e) => {
 
-        // Temporarily insert the message sent immediately so the user 
-        // won't have to wait for the database response before receiving their messages.
-        setMessages(old => [...old, {
-            roomId: roomId,
-            userName: user.displayName,
-            senderUid: user.uid,
-            message: message
-        }])
+        e.preventDefault();
+
+        // // Temporarily insert the message sent immediately so the user 
+        // // won't have to wait for the database response before receiving their messages.
+        // setMessages(old => [...old, {
+        //     roomId: roomId,
+        //     userName: user.displayName,
+        //     senderUid: user.uid,
+        //     message: message
+        // }])
 
         fetch('/api/messages/sendMessage', {
             method: 'POST',
@@ -62,10 +67,11 @@ const ChatView = () => {
             .then((data) => console.log(data));
 
         setMessage("");
+        autoScroller.current.scrollIntoView({ behavior: 'smooth' })
     };
 
     return (
-        <div className='flex flex-col justify-center'>
+        <div className='flex flex-col justify-center h-screen'>
 
             <Head>
                 <title>Chat App</title>
@@ -73,37 +79,26 @@ const ChatView = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className='bg-[#222222] h-screen'>
-                <div>
-                    <section className='fixed top-0 border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
-                        <p className='text-xl text-center text-white'>{roomData ? roomData.roomName : "Loading..."}</p>
-                        <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
-                    </section>
+            <section className='fixed h-fit bg-[#222222] top-0 border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
+                <p className='text-xl text-center text-white'>{roomData ? roomData.roomName : "Loading..."}</p>
+                <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
+            </section>
 
-                    <section className='flex flex-col text-right mt-28 mx-3 mb-24'>
-                        {messages
-                            ? messages.map((data, i) => <div key={i} className={`flex ${data.senderUid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
-                                <div className={`flex flex-col ${data.senderUid === user.uid ? 'items-end' : 'items-start'} mt-3`}>
-                                    <p className='text-white text-sm'>{data.userName}</p>
-                                    <div
-                                        className={`mt-1 bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-md`}
-                                    >   
-                                        <p className='text-start text-md' dangerouslySetInnerHTML={{ __html: data.message.split(/\n\r?/g).join("<br />") }}></p>
-                                        <p className='text-[0.8rem]'>Nov, 2022</p>
-                                    </div>
-                                </div>
-                            </div>)
-                            : <></>
-                        }
+            <div className='bg-[#222222] overflow-auto h-5/6 my-16'>
+                <div className='flex flex-col text-right mx-3 my-6'>
+                    {messages
+                        ? messages.map((message, i) => <Message key={i} data={message} />)
+                        : <></>
+                    }
 
-                    </section>
-
-                    <section className='fixed bottom-0 bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5'>
-                        <textarea placeholder='Write a message...' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-[#4d4d4d] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 h-10 px-2 rounded-md' type="textarea"></textarea>
-                        <button onClick={sendMessage} className='ml-2 bg-[#4d4d4d] text-white rounded-full px-3 py-1'>Send</button>
-                    </section>
+                    <div ref={autoScroller}></div>
                 </div>
             </div>
+
+            <form className='fixed bottom-0 h-fit bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
+                <input required placeholder='Write a message...' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-[#4d4d4d] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md'></input>
+                <button type='submit' className='ml-2 bg-[#4d4d4d] text-white rounded-full px-5 py-2 w-3/12 md:w-1/12'>Send</button>
+            </form>
         </div>
     )
 }
