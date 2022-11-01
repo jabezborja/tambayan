@@ -37,6 +37,8 @@ const ChatView = () => {
             setMessages(data.messages)
             setRoomData(data)
 
+            autoScroller.current.scrollIntoView({ behavior: 'smooth' })
+
         }, "rooms", roomId);
     }, []);
 
@@ -64,10 +66,11 @@ const ChatView = () => {
             })
         })
             .then((res) => res.json())
-            .then((data) => console.log(data));
+            .then((data) => {
+                console.log(data);
+            });
 
         setMessage("");
-        autoScroller.current.scrollIntoView({ behavior: 'smooth' })
     };
 
     return (
@@ -97,9 +100,9 @@ const ChatView = () => {
                         ? messages.map((message, i) => <Message key={i} data={message} />)
                         : <></>
                     }
-
-                    <div ref={autoScroller}></div>
                 </div>
+
+                <div ref={autoScroller}></div>
             </div>
 
             <form className='fixed bottom-0 h-fit bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
