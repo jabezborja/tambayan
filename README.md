@@ -1,34 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tambayan: sa Gedli
+<a href="https://tambayan.netlify.app">Tambayan</a> is an open-source chat platform where you can chat with other people, make more friends, and tumambay. Join Tambayan rooms, start chatting with people, have fun with bots, and much more!
 
-## Getting Started
+## Contributions
 
-First, run the development server:
+If you like this project, please consider giving it a start. Tambayan is open to contributions, but I recommend creating an issue or replying in a comment to let me know what you are working on first that way we don't overwrite each other.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Contributors
+<a href="https://github.com/jabezborja/tambayan/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jabezborja/tambayan" />
+</a>
 
-Open [https://tambayan.netlify.app](https://tambayan.netlify.app) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Please read [CONTRIBUTING.md](https://github.com/jabezborja/tambayan/blob/main/CONTRIBUTING.md) for details on this project and about contributing
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [https://tambayan.netlify.app/api/hello](https://tambayan.netlify.app/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Code of Conduct
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Please read [CODE_OF_CONDUCT.md](https://github.com/benawad/dogehouse/blob/staging/CODE_OF_CONDUCT.md) for details on our code of conduct.
