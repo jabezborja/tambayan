@@ -7,6 +7,7 @@ const CreateRoomModal = ({ state }) => {
     const router = useRouter();
 
     const [ roomName, setRoomName ] = useState();
+    const [ roomDescription, setRoomDescription ] = useState();
     const [ roomPassword, setRoomPassword ] = useState();
 
     const user = useSelector(state => state.user.user);
@@ -22,6 +23,7 @@ const CreateRoomModal = ({ state }) => {
             },
             body: JSON.stringify({
                 roomName: roomName,
+                description: roomDescription,
                 roomOwner: user,
                 password: roomPassword || null,
                 isPublic: roomPassword ? false : true,
@@ -60,11 +62,15 @@ const CreateRoomModal = ({ state }) => {
                             <div>
                                 <div className='mt-3 text-white'>
                                     <label htmlFor="name">Tambayan Name</label><br />
-                                    <input placeholder="Relationship talks 🤖" value={roomName} onChange={(e) => setRoomName(e.target.value)} name="name" className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
+                                    <input name="name" placeholder="Relationship talks 🤖" value={roomName} onChange={(e) => setRoomName(e.target.value)} className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
                                 </div>
                                 <div className='mt-3 text-white'>
-                                    <label htmlFor="name">Tambayan Password</label><br />
-                                    <input placeholder="Leave empty if Public" value={roomPassword} onChange={(e) => setRoomPassword(e.target.value)} name="name" className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
+                                    <label htmlFor="description">Tambayan Description</label><br />
+                                    <input name="description" placeholder="Let's talk about relationships!" value={roomDescription} onChange={(e) => setRoomDescription(e.target.value)} className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
+                                </div>
+                                <div className='mt-3 text-white'>
+                                    <label htmlFor="password">Tambayan Password</label><br />
+                                    <input name="password" placeholder="Leave empty if Public" value={roomPassword} onChange={(e) => setRoomPassword(e.target.value)}  className='mt-1 bg-[#474747] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
                                 </div>
                             </div>
                         </div> 

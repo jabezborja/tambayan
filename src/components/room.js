@@ -22,8 +22,8 @@ const Room = ({ room }) => {
         <div className="flex justify-between items-center">
             <div>
                 <p className="font-bold">{room.roomName}</p>
-                <p className="text-sm">Hosted by {room.roomOwner.displayName}</p>
-                <p>Click to join room</p>
+                <p className="text-[0.7rem]">Hosted by {room.roomOwner.displayName}</p>
+                <p><strong>Description:</strong> {room.description}</p>
             </div>
             
             <div className="mr-3">

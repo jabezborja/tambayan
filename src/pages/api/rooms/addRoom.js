@@ -8,6 +8,7 @@ export default function handler(req, res) {
 
     const room = new Room(
         req.body.roomName,
+        req.body.description,
         req.body.roomOwner,
         [],
         req.body.password,

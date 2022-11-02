@@ -57,7 +57,7 @@ const App = () => {
 
       { showCreateRoomModal ? <CreateRoomModal state={setShowCreateRoomModal} /> : <></> }
 
-      <div className="mt-10 w-fit mx-auto flex flex-col">
+      <div className="mt-10 mx-auto flex flex-col w-full lg:w-5/12">
 
           <div className="text-center">
               <p className='text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#DC2424] to-[#4A569D]'>Tambayan: sa Gedli</p>

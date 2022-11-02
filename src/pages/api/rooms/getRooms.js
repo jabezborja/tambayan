@@ -16,6 +16,7 @@ export default function handler(req, res) {
             rooms.push({
                 id: room.id,
                 roomName: data.roomName,
+                description: data.description,
                 roomOwner: data.roomOwner,
                 isPublic: data.isPublic,
                 password: data.password,
