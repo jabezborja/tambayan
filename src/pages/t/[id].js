@@ -32,6 +32,7 @@ const ChatView = ({ data, id }) => {
 
     const [ roomData, setRoomData ] = useState();
     const [ messages, setMessages ] = useState([]);
+    const [ selectedMessageIndex, setSelectedMessageIndex ] = useState(-1);
 
     const [ message, setMessage ] = useState('');
 
@@ -120,7 +121,7 @@ const ChatView = ({ data, id }) => {
 
             <div className='bg-[#222222] overflow-auto h-5/6'>
                 <div className='flex flex-col text-right mx-3 my-2'>
-                    { messages.map((message, i) => <MessageView key={i} data={message} user={user} />) }
+                    { messages.map((message, i) => <MessageView key={i} roomId={id} data={message} user={user} index={i} selectedMessageIndex={selectedMessageIndex} setSelectedMessageIndex={setSelectedMessageIndex} />) }
                 </div>
 
                 <div ref={autoScroller}></div>

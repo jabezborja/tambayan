@@ -1,18 +1,39 @@
 import timeDate, { completeDate } from "../utils/timeDate";
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
+import { useState } from "react";
 
-const Message = ({ data, user }) => {
+const Message = ({ roomId, data, user, index, selectedMessageIndex, setSelectedMessageIndex }) => {
 
     const dateSent = timeDate(data.dateSent.seconds);
 
     const parsedAndPurifiedMessage = DOMPurify.sanitize(marked.parse(data.message));
 
+    const [ showDropdown, setShowDropdown ] = useState(false);
+
+    const handleDelete = async e => {
+        await fetch('/api/messages/deleteMessage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                roomId: roomId,
+                messageId: data.messageId
+            })
+        });
+    }
+
+    const handleMessageHighlight = e => {
+        if (selectedMessageIndex === index) return setSelectedMessageIndex(-1);
+
+        setSelectedMessageIndex(index);
+    }
+
     return (
         <div className={`flex ${data.user.uid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
-            <div className={`flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'} mt-3`}>
+            <div className={`flex ${data.user.uid === user.uid ? 'flex-row-reverse' : 'flex-row'} items-center mt-3`}>
                 <div
-                    className={`mt-1 max-w-screen-md flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'} bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-md`}
+                    onClick={handleMessageHighlight}
+                    className={`mt-1 max-w-screen-md flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'} ${selectedMessageIndex !== index ? 'bg-[#4d4d4d]' : 'bg-[#333333]'} text-white py-2 px-3 w-fit rounded-md`}
                 >   
                     <div className={`flex ${data.user.uid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
                         <img className="h-10 w-10 rounded-full" src={data.user.photoURL}></img>
@@ -56,6 +77,30 @@ const Message = ({ data, user }) => {
                     </div>
                     <p className='mt-2 text-start text-md' dangerouslySetInnerHTML={{ __html: parsedAndPurifiedMessage }} ></p>
                 </div>
+
+                {selectedMessageIndex === index
+                    && <div className="flex flex-col items-center">
+                        <button title="Menu" onClick={() => setShowDropdown(v => !v)} className={`${data.user.uid === user.uid ? 'mr-2' : 'ml-2'} flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'}`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-white">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                            {showDropdown
+                                && <div class="z-10 w-44 bg-[#555555] text-white rounded">
+                                    <ul class="text-sm hover:bg-[#444444]" aria-labelledby="dropdownDefault">
+                                        {data.user.uid === user.uid
+                                            ? <li onClick={handleDelete}>
+                                                <a href="#" class="block py-2 px-4">Delete</a>
+                                            </li>
+                                            : <li>
+                                                <a href="#" class="block py-2 px-4">Report</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </button>
+                    </div>
+                }
             </div>
         </div>
     );

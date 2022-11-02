@@ -3,7 +3,7 @@ import {
     doc, addDoc, updateDoc,
     getDoc, getDocs, collection,
     onSnapshot, arrayUnion,
-    setDoc, query, orderBy
+    setDoc, query, orderBy, arrayRemove
 } from 'firebase/firestore';
 
 import app from './clientApp';
@@ -39,11 +39,11 @@ const getDocument = async (collectionName, documentId) => {
     return false;
 }
 
-const updateMessages = async (collectionName, documentId, update) => {
+const updateMessages = async (collectionName, documentId, update, isAdd=true) => {
     const ref = doc(db, collectionName, documentId);
 
     try {
-        await updateDoc(ref, { messages: arrayUnion(update) });
+        await updateDoc(ref, { messages: isAdd ? arrayUnion(update) : arrayRemove(update) });
         
         return [ true, null ];
     } catch (e) {
