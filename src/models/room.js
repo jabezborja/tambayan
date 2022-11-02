@@ -1,12 +1,13 @@
 
 class Room {
-    constructor(roomName, description, roomOwnerId, messages, password, isPublic, dateCreated) {
+    constructor(roomName, description, roomOwnerId, messages, password, isPublic, bots, dateCreated) {
         this.roomName = roomName;
         this.description = description;
         this.roomOwnerId = roomOwnerId;
         this.messages = messages;
         this.password = password;
         this.isPublic = isPublic;
+        this.bots = bots;
         this.dateCreated = dateCreated;
     }
 
@@ -18,7 +19,7 @@ class Room {
             messages: this.messages,
             password: this.password,
             isPublic: this.isPublic,
-            bots: [],
+            bots: this.bots,
             archived: false,
             dateCreated: this.dateCreated
         };
