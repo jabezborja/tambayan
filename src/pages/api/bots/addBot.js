@@ -8,9 +8,7 @@ export default function handler(req, res) {
 
     const bot = getDocument("bots", req.body.botId);
 
-    bot.then((data) => {
-        data['callback'] = req.body.callback;
-        
+    bot.then((data) => {        
         if (data.accessKey !== req.body.accessKey) {
             return res.status(401).send({ error: "Wrong accessKey. Access denied.", success: false })
         }

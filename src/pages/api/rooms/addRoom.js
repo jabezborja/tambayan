@@ -11,10 +11,11 @@ export default function handler(req, res) {
         req.body.roomName,
         req.body.description,
         req.body.roomOwner,
-        [],
+        [], // Messages
         req.body.password,
         req.body.isPublic,
-        [],
+        [], // Bots
+        [], // Bot Commands
         req.body.dateCreated
     );
     

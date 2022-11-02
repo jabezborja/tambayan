@@ -1,14 +1,24 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
+import { inProduction } from "../../../utils/environment";
 
 const fireBotsCallback = (room, roomId, message) => {
     room.bots.forEach(async (bot) => {
-        await fetch(bot.callback, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ roomId: roomId, accessKey: bot.accessKey, message: message })
-        })
-    })
+        if (message.message.includes('/' + bot.botCommand)) {
+            await fetch(bot.callbackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    roomId: roomId,
+                    accessKey: bot.accessKey,
+                    message: message,
+                    callback: `${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`
+                })
+            });
+
+            return;
+        }
+    });
 }
 
 export default function handler(req, res) {

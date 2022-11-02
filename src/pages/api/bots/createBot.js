@@ -11,6 +11,8 @@ export default function handler(req, res) {
     const botJson = bot.toJson();
 
     botJson['accessKey'] = uuidv4();
+    botJson['callbackUrl'] = req.body.callbackUrl;
+    botJson['botCommand'] = req.body.botCommand;
 
     const botDoc = addDocument("bots", botJson);
 

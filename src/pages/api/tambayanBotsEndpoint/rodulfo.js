@@ -1,29 +1,25 @@
-import { inProduction } from "../../../utils/environment";
 
 export default async function handler(req, res) {
 
     if (req.method !== "POST") return res.status(405);
 
     var messageToBeSent;
+
     const message = req.body.message.message;
 
-    console.log("TEST")
-
-    if (message.includes("/rodulfo")) {
-        if (message.includes("bark")) {
-            messageToBeSent = "Woof! Woof!"
-        } else if (message.includes("meme")) {
-
-            await fetch('https://api.imgflip.com/get_memes')
-                .then((res) => res.json())
-                .then((data) => {
-                    messageToBeSent = `<img src='${data.data.memes[Math.floor(Math.random() * data.data.memes.length-1)].url}'></img>`
-                })
-            
-        }
+    if (message.includes("help")) {
+        messageToBeSent = "<p>Rodulfo commands: <b>/rodulfo [command]</b></p><br /><p><b>Commands:</b></p><p><pre><code>bark</code></pre> - bark like a good dog</p><p><pre><code>value of pi</code></pre> - show the value of pi</p><p><pre><code>dance</code></pre> - rodulfo will dance</p>"
+    } else if (message.includes("bark")) {
+        messageToBeSent = "Woof! Woof!"
+    } else if (message.includes("value of pi")) {
+        messageToBeSent = Math.PI.toString()
+    } else if (message.includes("dance")) {
+        messageToBeSent = "<img src='https://media.tenor.com/ypAFp65sE-sAAAAd/roblox-dancing.gif'></img>"
+    } else {
+        messageToBeSent = "Beep boop! That doesn't exist in my vocabulary."
     }
     
-    fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`, {
+    fetch(req.body.callback, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
