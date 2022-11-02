@@ -32,7 +32,6 @@ export default function handler(req, res) {
             body: JSON.stringify({
                 botId: rodulfoBotId,
                 accessKey: rodulfoBotAccessKey,
-                callback: 'https://tambayan.netlify.app/api/tambayanBotsEndpoint/rodulfo',
                 roomId: id
             })
         })
@@ -45,7 +44,7 @@ export default function handler(req, res) {
                 botId: rodulfoBotId,
                 accessKey: rodulfoBotAccessKey,
                 roomId: id,
-                message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.netlify.app/chat?room=" + id + "</strong>"
+                message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.netlify.app/chat?room=" + id + "</strong>"
             })
         })
 
