@@ -34,6 +34,7 @@ export default function handler(req, res) {
                 Date().toString(), // Message ID
                 req.body.user,
                 req.body.message,
+                req.body.repliedTo,
                 new Date()
             );
     

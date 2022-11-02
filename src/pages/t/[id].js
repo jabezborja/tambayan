@@ -35,6 +35,7 @@ const ChatView = ({ data, id }) => {
     const [ selectedMessageIndex, setSelectedMessageIndex ] = useState(-1);
 
     const [ message, setMessage ] = useState('');
+    const [ replyingTo, setReplyingTo ] = useState(null);
 
     const textInput = useRef(null);
     const autoScroller = useRef(null);
@@ -92,11 +93,13 @@ const ChatView = ({ data, id }) => {
                 roomId: id,
                 user: user,
                 moderator: user.uid === roomData.roomOwner.uid,
+                repliedTo: replyingTo ? messages[replyingTo] : null,
                 message: message
             })
         });
-
+        
         setMessage("");
+        setReplyingTo(null);
     };
 
     return (
@@ -121,16 +124,40 @@ const ChatView = ({ data, id }) => {
 
             <div className='bg-[#222222] overflow-auto h-5/6'>
                 <div className='flex flex-col text-right mx-3 my-2'>
-                    { messages.map((message, i) => <MessageView key={i} roomId={id} data={message} user={user} index={i} selectedMessageIndex={selectedMessageIndex} setSelectedMessageIndex={setSelectedMessageIndex} />) }
+                    { messages.map((message, i) => 
+                        <MessageView
+                            key={i}
+                            index={i}
+                            roomId={id}
+                            data={message}
+                            user={user}
+                            textInput={textInput}
+                            selectedMessageIndex={{ selectedMessageIndex, setSelectedMessageIndex }}
+                            replyingTo={{ replyingTo, setReplyingTo }}
+                        />) }
                 </div>
 
                 <div ref={autoScroller}></div>
             </div>
 
-            <form className='h-fit bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
-                <textarea required placeholder='Write a message...' ref={textInput} value={message} onChange={handleCancelLinebreak} onKeyUp={handleMessage} className='bg-[#4d4d4d] text-white resize-none overflow-hidden focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 px-2 rounded-md'></textarea>
-                <button type='submit' className='ml-2 bg-[#4d4d4d] text-white rounded-full px-5 py-2 w-3/12 md:w-1/12'>Send</button>
-            </form>
+            <div className='h-fit bg-[#222222] border-t border-[#4d4d4d]'>
+                {replyingTo
+                    && <div className='mx-5 mt-5 flex flex-row-reverse items-center justify-between'>
+                        <button onClick={() => setReplyingTo(null)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+
+                        <p className='text-white'>Replying to <b>{messages[replyingTo].user.displayName}</b></p>
+                    </div>
+                }
+
+                <form className='border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
+                    <textarea required placeholder='Write a message...' ref={textInput} value={message} onChange={handleCancelLinebreak} onKeyUp={handleMessage} className='bg-[#4d4d4d] text-white resize-none overflow-hidden focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 px-2 rounded-md'></textarea>
+                    <button type='submit' className='ml-2 bg-[#4d4d4d] text-white rounded-full px-5 py-2 w-3/12 md:w-1/12'>Send</button>
+                </form>
+            </div>
         </div>
     )
 }
