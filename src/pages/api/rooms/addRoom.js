@@ -24,19 +24,19 @@ export default function handler(req, res) {
         const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
 
         // Install Rodulfo Bot to the Tambayan room
-        fetch('http://localhost:3000/api/bots/addBot', {
+        fetch('https://tambayan.netlify.app/api/bots/addBot', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 botId: rodulfoBotId,
                 accessKey: rodulfoBotAccessKey,
-                callback: 'http://localhost:3000/api/tambayanBotsEndpoint/rodulfo',
+                callback: 'https://tambayan.netlify.app/api/tambayanBotsEndpoint/rodulfo',
                 roomId: id
             })
         })
 
         // Initial Rodulfo message.
-        fetch('http://localhost:3000/api/bots/botMessage', {
+        fetch('https://tambayan.netlify.app/api/bots/botMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

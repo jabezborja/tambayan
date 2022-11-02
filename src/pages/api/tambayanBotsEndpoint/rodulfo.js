@@ -22,7 +22,7 @@ export default async function handler(req, res) {
         }
     }
     
-    fetch('http://localhost:3000/api/bots/botMessage', {
+    fetch('https://tambayan.netlify.app/api/bots/botMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
