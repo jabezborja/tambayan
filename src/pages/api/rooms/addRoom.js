@@ -1,6 +1,7 @@
 import { addDocument, updateMessages } from "../../../firebase/database";
 import Room from "../../../models/room";
-import Message from "../../../models/message";
+import { inProduction } from "../../../utils/environment";
+
 
 export default function handler(req, res) {
 
@@ -24,7 +25,7 @@ export default function handler(req, res) {
         const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
 
         // Install Rodulfo Bot to the Tambayan room
-        fetch('https://tambayan.netlify.app/api/bots/addBot', {
+        fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/addBot`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -36,7 +37,7 @@ export default function handler(req, res) {
         })
 
         // Initial Rodulfo message.
-        fetch('https://tambayan.netlify.app/api/bots/botMessage', {
+        fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

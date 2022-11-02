@@ -1,3 +1,4 @@
+import { inProduction } from "../../../utils/environment";
 
 export default async function handler(req, res) {
 
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
         }
     }
     
-    fetch('https://tambayan.netlify.app/api/bots/botMessage', {
+    fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
