@@ -17,6 +17,7 @@ const ChatView = () => {
 
     const [ message, setMessage ] = useState('');
 
+    const textInput = useRef(null);
     const autoScroller = useRef(null);
 
     useEffect(() => {
@@ -56,7 +57,23 @@ const ChatView = () => {
 
     }, [room]);
 
-    const sendMessage = (e) => {
+    const handleMessage = e => {
+        if (e.key === "Enter" && e.shiftKey) {
+            textInput.current.style.height = "auto";
+            textInput.current.style.height = textInput.current.style.scrollHeight + "px";
+            setMessage(message + '\r\n');
+        } else if (e.key === "Enter") {
+            e.target.form.requestSubmit();
+        }
+    }
+
+    const handleCancelLinebreak = e => {
+        if (e.nativeEvent.inputType === "insertLineBreak") return;
+
+        setMessage(e.target.value);
+    }
+
+    const sendMessage = e => {
 
         e.preventDefault();
 
@@ -113,7 +130,7 @@ const ChatView = () => {
             </div>
 
             <form className='h-fit bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
-                <input required placeholder='Write a message...' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-[#4d4d4d] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md'></input>
+                <textarea required placeholder='Write a message...' ref={textInput} value={message} onChange={handleCancelLinebreak} onKeyUp={handleMessage} className='bg-[#4d4d4d] text-white resize-none overflow-hidden focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 px-2 rounded-md'></textarea>
                 <button type='submit' className='ml-2 bg-[#4d4d4d] text-white rounded-full px-5 py-2 w-3/12 md:w-1/12'>Send</button>
             </form>
         </div>
