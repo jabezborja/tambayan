@@ -3,7 +3,7 @@ import Message from "../../../models/message";
 import { inProduction } from "../../../utils/environment";
 
 const fireBotsCallback = (room, roomId, message) => {
-    room.bots.forEach(async (bot) => {
+    room.installedBots.forEach(async (bot) => {
         if (message.message.includes('/' + bot.botCommand)) {
             await fetch(bot.callbackUrl, {
                 method: 'POST',
