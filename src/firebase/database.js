@@ -1,4 +1,10 @@
-import { initializeFirestore, doc, addDoc, updateDoc, getDoc, getDocs, collection, onSnapshot, arrayUnion, setDoc, query, orderBy} from 'firebase/firestore';
+import {
+    initializeFirestore,
+    doc, addDoc, updateDoc,
+    getDoc, getDocs, collection,
+    onSnapshot, arrayUnion,
+    setDoc, query, orderBy
+} from 'firebase/firestore';
 
 import app from './clientApp';
 

@@ -9,70 +9,34 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
-const signInWithGoogle = async () => {
-    await signInWithPopup(auth, googleProvider)
-        .then((result) => {
-
-            const userResult = result.user;
-            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL, false);
-
-            console.log(userResult)
-
-            setDocument("users", user.toJson(), userResult.uid);
-
-            return true;
-
-        })
-        .catch((err) => {
-            console.log(err.code, err.message);
-
-            return false;
-        })
-}
-
-const signInWithGithub = async () => {
-    await signInWithPopup(auth, githubProvider)
-        .then((result) => {
-
-            const userResult = result.user;
-            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL, false);
-
-            setDocument("users", user.toJson(), userResult.uid);
-
-            return true;
-
-        })
-        .catch((err) => {
-            console.log(err.code, err.message);
-
-            return false;
-        })
-}
-
-const signOutAccount = async () => {
-    await signOut(auth)
-        .then(() => {
-            return true;
-        })
-        .catch((err) => {
-            console.log(err.code, err.message);
-
-            return false;
-        })
-}
-
-onAuthStateChanged(auth, (u) => {
-
-    console.log(u)
+onAuthStateChanged(auth, async (u) => {
 
     if (!u) return store.dispatch(setUser(null));
 
-    const user = getDocument("users", u.uid);
-
-    user.then((data) => {
-        console.log(data);
-        store.dispatch(setUser(data))
-    })
+    const user = await getDocument("users", u.uid);
+    store.dispatch(setUser(user))
 });
+
+const signInWith = async provider => {
+    await signInWithPopup(auth, provider)
+        .then((result) => {
+            const userResult = result.user;
+            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL, false);
+
+            setDocument("users", user.toJson(), userResult.uid);
+
+            return true;
+        })
+        .catch((err) => false)
+}
+
+const signInWithGoogle = async () => signInWith(googleProvider)
+const signInWithGithub = async () => signInWith(githubProvider)
+
+const signOutAccount = async () => {
+    await signOut(auth)
+        .then(() => true)
+        .catch((err) => err)
+}
 
 export { signOutAccount, signInWithGoogle, signInWithGithub, auth };

@@ -10,7 +10,7 @@ const Room = ({ room }) => {
 
     const handleRoomEntry = (e) => {
         if (room.isPublic) {
-            return router.push('/chat?room=' + room.id);
+            return router.push('/t/' + room.id);
         }
 
         setShowPasswordModal(true);

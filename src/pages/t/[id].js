@@ -2,13 +2,31 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { listenToDocument } from '../firebase/database';
-import MessageView from '../components/message';
+import { listenToDocument } from '../../firebase/database';
+import absoluteUrl from 'next-absolute-url';
+import MessageView from '../../components/message';
 
-const ChatView = () => {
+export async function getServerSideProps({ params, req }) {
+
+    const { origin } = absoluteUrl(req, req.headers.host);
+    
+    const { id } = params;
+
+    const room = await fetch(origin + '/api/rooms/getRoom', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ "roomId": id })
+    });
+
+    const data = await room.json();
+
+    return { props: { data, id } }
+
+}
+
+const ChatView = ({ data, id }) => {
 
     const router = useRouter();
-    const { room } = router.query;
 
     const user = useSelector(state => state.user.user);
 
@@ -28,32 +46,21 @@ const ChatView = () => {
             return () => router.push('/');
         }
 
-        if (!room) return;
+        setRoomData(data);
+        setMessages(data.messages)
 
-        fetch('/api/rooms/getRoom', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ "roomId": room })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setRoomData(data);
-                setMessages(data.messages)
-                
-            });
-
-        const unsub = listenToDocument((doc) => {
+        const messageListener = listenToDocument((doc) => {
             var data = doc.data();
             
             setMessages(data.messages)
             setRoomData(data)    
-        }, "rooms", room);
+        }, "rooms", id);
 
         return () => {
-            unsub();
+            messageListener();
         }
 
-    }, [room]);
+    }, []);
 
     useEffect(() => {
         autoScroller.current.scrollIntoView({ behavior: 'smooth' })
@@ -61,8 +68,6 @@ const ChatView = () => {
 
     const handleMessage = e => {
         if (e.key === "Enter" && e.shiftKey) {
-            textInput.current.style.height = "auto";
-            textInput.current.style.height = textInput.current.style.scrollHeight + "px";
             setMessage(message + '\r\n');
         } else if (e.key === "Enter") {
             e.target.form.requestSubmit();
@@ -75,24 +80,15 @@ const ChatView = () => {
         setMessage(e.target.value);
     }
 
-    const sendMessage = e => {
+    const sendMessage = async e => {
 
         e.preventDefault();
 
-        // // Temporarily insert the message sent immediately so the user 
-        // // won't have to wait for the database response before receiving their messages.
-        // setMessages(old => [...old, {
-        //     room: room,
-        //     userName: user.displayName,
-        //     senderUid: user.uid,
-        //     message: message
-        // }])
-
-        fetch('/api/messages/sendMessage', {
+        await fetch('/api/messages/sendMessage', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                roomId: room,
+                roomId: id,
                 user: user,
                 moderator: user.uid === roomData.roomOwner.uid,
                 message: message
@@ -120,7 +116,6 @@ const ChatView = () => {
                         : "Loading..."
                     }
                 </p>
-                {/* <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button> */}
             </section>
 
             <div className='bg-[#222222] overflow-auto h-5/6'>

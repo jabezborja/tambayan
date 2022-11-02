@@ -12,11 +12,11 @@ const CreateRoomModal = ({ state }) => {
 
     const user = useSelector(state => state.user.user);
 
-    const handleCreateRoom = (e) => {
+    const handleCreateRoom = async e => {
 
         e.preventDefault();
 
-        fetch('/api/rooms/addRoom', {
+        const res = await fetch('/api/rooms/addRoom', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,14 +29,11 @@ const CreateRoomModal = ({ state }) => {
                 isPublic: roomPassword ? false : true,
                 dateCreated: new Date()
             })
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success) {
-                    router.push("/chat?room=" + data.roomId);
-                }
-            });
+        });
 
+        const data = await res.json()
+
+        if (data.success) router.push("/t/" + data.roomId);
     }
 
     return (

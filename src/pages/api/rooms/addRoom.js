@@ -21,12 +21,12 @@ export default function handler(req, res) {
     
     const roomDoc = addDocument("rooms", room.toJson());
 
-    roomDoc.then((id) => {
+    roomDoc.then(async (id) => {
         const rodulfoBotId = "m7O7fDTVyM6j4AtLpVQH";
         const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
 
         // Install Rodulfo Bot to the Tambayan room
-        fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/addBot`, {
+        await fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/addBot`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -37,7 +37,7 @@ export default function handler(req, res) {
         })
 
         // Initial Rodulfo message.
-        fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`, {
+        await fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

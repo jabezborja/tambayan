@@ -10,10 +10,8 @@ const PasswordModal = ({ room, state }) => {
   const handleRoomEntry = (e) => {
     e.preventDefault();
 
-    console.log(password, room.password);
-
     if (password === room.password) {
-      return router.push('/chat?room=' + room.id);
+      return router.push('/t/' + room.id);
     }
 
     alert("Wrong password")

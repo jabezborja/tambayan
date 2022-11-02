@@ -11,17 +11,10 @@ export default function handler(req, res) {
     roomsDoc.then((snap) => {
         snap.forEach((room) => {
 
-            const data = room.data();
+            var data = room.data();
+            data['id'] = room.id
     
-            rooms.push({
-                id: room.id,
-                roomName: data.roomName,
-                description: data.description,
-                roomOwner: data.roomOwner,
-                isPublic: data.isPublic,
-                password: data.password,
-                dateCreated: data.dateCreated
-            });
+            rooms.push(data);
         });
 
         res.status(200).send({ rooms: rooms });

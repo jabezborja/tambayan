@@ -2,8 +2,6 @@ import { getDocument, updateBots } from "../../../firebase/database";
 
 export default function handler(req, res) {
 
-    // botId, apiKey, roomId
-
     if (req.method !== "POST") return res.status(405);
 
     const bot = getDocument("bots", req.body.botId);
