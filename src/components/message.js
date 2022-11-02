@@ -1,8 +1,12 @@
 import timeDate, { completeDate } from "../utils/timeDate";
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 const Message = ({ data, user }) => {
 
     const dateSent = timeDate(data.dateSent.seconds);
+
+    const parsedAndPurifiedMessage = DOMPurify.sanitize(marked.parse(data.message));
 
     return (
         <div className={`flex ${data.user.uid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -40,7 +44,7 @@ const Message = ({ data, user }) => {
                             </div>              
                         </div>
                     </div>
-                    <p className='mt-2 text-start text-md' dangerouslySetInnerHTML={{ __html: data.message.split(/\n\r?/g).join("<br />") }}></p>
+                    <p className='mt-2 text-start text-md' dangerouslySetInnerHTML={{ __html: parsedAndPurifiedMessage }} ></p>
                 </div>
             </div>
         </div>
