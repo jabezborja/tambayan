@@ -1,4 +1,4 @@
-import { initializeFirestore, doc, addDoc, updateDoc, getDoc, getDocs, collection, onSnapshot, arrayUnion, setDoc} from 'firebase/firestore';
+import { initializeFirestore, doc, addDoc, updateDoc, getDoc, getDocs, collection, onSnapshot, arrayUnion, setDoc, query, orderBy} from 'firebase/firestore';
 
 import app from './clientApp';
 
@@ -18,8 +18,10 @@ const setDocument = async (collectionName, document, id) => {
     return await setDoc(docRef, document);
 }
 
-const getDocuments = async (collectionName) => {
-    return await getDocs(collection(db, collectionName));
+const getDocuments = async (collectionName, by) => {
+    const collectionRef = collection(db, collectionName);
+
+    return await getDocs(query(collectionRef, orderBy("dateCreated", "asc")));
 }
 
 const getDocument = async (collectionName, documentId) => {
