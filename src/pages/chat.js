@@ -92,7 +92,7 @@ const ChatView = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <section className='fixed h-fit bg-[#222222] top-0 border-b border-[#4d4d4d] w-screen px-10 py-8 flex justify-between'>
+            <section className='h-fit bg-[#222222] border-b border-[#4d4d4d] w-screen pl-10 py-8 flex justify-between'>
                 <p className='text-xl text-center text-white'>
                     {roomData
                         ? roomData.isPublic
@@ -101,18 +101,18 @@ const ChatView = () => {
                         : "Loading..."
                     }
                 </p>
-                <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button>
+                {/* <button className='bg-green-500 text-white rounded-full px-6 py-1'>Call</button> */}
             </section>
 
-            <div className='bg-[#222222] overflow-auto h-5/6 my-16'>
-                <div className='flex flex-col text-right mx-3 my-6'>
+            <div className='bg-[#222222] overflow-auto h-5/6'>
+                <div className='flex flex-col text-right mx-3 my-2'>
                     { messages.map((message, i) => <MessageView key={i} data={message} user={user} />) }
                 </div>
 
                 <div ref={autoScroller}></div>
             </div>
 
-            <form className='fixed bottom-0 h-fit bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
+            <form className='h-fit bg-[#222222] border-t border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
                 <input required placeholder='Write a message...' value={message} onChange={(e) => setMessage(e.target.value)} className='bg-[#4d4d4d] text-white focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md'></input>
                 <button type='submit' className='ml-2 bg-[#4d4d4d] text-white rounded-full px-5 py-2 w-3/12 md:w-1/12'>Send</button>
             </form>

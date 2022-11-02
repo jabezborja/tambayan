@@ -8,7 +8,7 @@ const Message = ({ data, user }) => {
         <div className={`flex ${data.user.uid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
             <div className={`flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'} mt-3`}>
                 <div
-                    className={`mt-1 flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'} bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-md`}
+                    className={`mt-1 max-w-screen-md flex flex-col ${data.user.uid === user.uid ? 'items-end' : 'items-start'} bg-[#4d4d4d] text-white py-2 px-3 w-fit rounded-md`}
                 >   
                     <div className={`flex ${data.user.uid === user.uid ? 'flex-row-reverse' : 'flex-row'}`}>
                         <img className="h-10 w-10 rounded-full" src={data.user.photoURL}></img>
