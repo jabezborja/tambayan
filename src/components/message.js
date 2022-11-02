@@ -59,10 +59,13 @@ const Message = (props) => {
                                         <div className={`flex flex-col ${isOwnChat ? 'items-end mr-2' : 'items-start ml-2'}`}>
                                             <p className='text-white font-bold text-md'>{data.repliedTo.user.displayName}</p>
                                             <p className='text-[0.7rem] hover:cursor-default' title={completeDate(data.repliedTo.user.seconds)}>{dateSent}</p>
-                                        </div>            
+                                        </div>
                                     </div>
                                 </div>
-                                <p className={`mt-2 ${isOwnChat ? 'text-end' : 'text-start'} text-md`} dangerouslySetInnerHTML={{ __html: sanitizeMessage(data.repliedTo.message) }} ></p>
+                                {!data.message.includes('img') 
+                                    ? <p className={`mt-2 ${isOwnChat ? 'text-end' : 'text-start'} text-md`} dangerouslySetInnerHTML={{ __html: sanitizeMessage(data.repliedTo.message) }} ></p>
+                                    : <p>Attachment</p>
+                                }
                             </div>
                         }
                         <div className={`flex ${isOwnChat ? 'flex-row-reverse' : 'flex-row'}`}>
