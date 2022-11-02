@@ -39,16 +39,14 @@ const ChatView = () => {
             .then((data) => {
                 setRoomData(data);
                 setMessages(data.messages)
+                
             });
 
         const unsub = listenToDocument((doc) => {
             var data = doc.data();
             
             setMessages(data.messages)
-            setRoomData(data)
-    
-            autoScroller.current.scrollIntoView({ behavior: 'smooth' })
-    
+            setRoomData(data)    
         }, "rooms", room);
 
         return () => {
@@ -56,6 +54,10 @@ const ChatView = () => {
         }
 
     }, [room]);
+
+    useEffect(() => {
+        autoScroller.current.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
 
     const handleMessage = e => {
         if (e.key === "Enter" && e.shiftKey) {
