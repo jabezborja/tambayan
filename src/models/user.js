@@ -1,10 +1,11 @@
 
 class User {
-    constructor(uid, displayName, email, photoURL) {
+    constructor(uid, displayName, email, photoURL, isBot) {
         this.uid = uid;
         this.displayName = displayName;
         this.email = email;
         this.photoURL = photoURL;
+        this.isBot = isBot;
     }
 
     toJson() {
@@ -13,7 +14,8 @@ class User {
             displayName: this.displayName,
             email: this.email,
             photoURL: this.photoURL,
-            verified: false,
+            isBot: this.isBot,
+            verified: false
         };
     }
 }

@@ -14,7 +14,7 @@ const signInWithGoogle = async () => {
         .then((result) => {
 
             const userResult = result.user;
-            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL);
+            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL, false);
 
             console.log(userResult)
 
@@ -35,7 +35,7 @@ const signInWithGithub = async () => {
         .then((result) => {
 
             const userResult = result.user;
-            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL);
+            const user = new User(userResult.uid, userResult.displayName, userResult.email, userResult.photoURL, false);
 
             setDocument("users", user.toJson(), userResult.uid);
 

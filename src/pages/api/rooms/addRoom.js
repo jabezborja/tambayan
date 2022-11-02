@@ -1,4 +1,4 @@
-import { addDocument, updateDocument } from "../../../firebase/database";
+import { addDocument, updateMessages } from "../../../firebase/database";
 import Room from "../../../models/room";
 import Message from "../../../models/message";
 
@@ -32,7 +32,7 @@ export default function handler(req, res) {
             new Date()
         );
 
-        updateDocument("rooms", id, roomIntroduction.toJson());
+        updateMessages("rooms", id, roomIntroduction.toJson());
 
         res.status(200).send({ roomId: id, success: true });
     });

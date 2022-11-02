@@ -1,17 +1,35 @@
-import { updateDocument } from "../../../firebase/database";
+import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 
+const fireBotsCallback = (bots, message) => {
+    bots.forEach(async (bot) => {
+        await fetch(bot.callback, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        })
+    })
+}
+
 export default function handler(req, res) {
+
+    var room;
 
     if (req.method !== "POST") return res.status(405);
 
     req.body.user['moderator'] = req.body.moderator;
 
+    getDocument("rooms", req.body.roomId)
+        .then((data) => room = data);
+
     const message = new Message(req.body.user, req.body.message, new Date());
     
-    updateDocument("rooms", req.body.roomId, message.toJson())
+    updateMessages("rooms", req.body.roomId, message.toJson())
         .then(([ success, err ]) => {
             if (success) {
+
+                fireBotsCallback(room.bots, message.toJson())
+
                 res.status(200).send({ success: true });
             } else {
                 res.status(500).send({ success: false, error: err }); 

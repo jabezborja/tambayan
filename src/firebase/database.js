@@ -33,11 +33,23 @@ const getDocument = async (collectionName, documentId) => {
     return false;
 }
 
-const updateDocument = async (collectionName, documentId, update) => {
+const updateMessages = async (collectionName, documentId, update) => {
     const ref = doc(db, collectionName, documentId);
 
     try {
         await updateDoc(ref, { messages: arrayUnion(update) });
+        
+        return [ true, null ];
+    } catch (e) {
+        return [ false, e ];
+    }
+}
+
+const updateBots = async (collectionName, documentId, update) => {
+    const ref = doc(db, collectionName, documentId);
+
+    try {
+        await updateDoc(ref, { bots: arrayUnion(update) });
         
         return [ true, null ];
     } catch (e) {
@@ -53,4 +65,4 @@ const listenToDocument = (func, collectionName, documentId) => {
     return unsub;
 }
 
-export { db, addDocument, setDocument, getDocuments, getDocument, updateDocument, listenToDocument }
+export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, updateBots, listenToDocument }

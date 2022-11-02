@@ -18,6 +18,7 @@ class Room {
             messages: this.messages,
             password: this.password,
             isPublic: this.isPublic,
+            bots: [],
             archived: false,
             dateCreated: this.dateCreated
         };
