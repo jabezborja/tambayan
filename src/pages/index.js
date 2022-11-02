@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { signInWithGithub, signInWithGoogle } from "../firebase/auth";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const App = () => {
 
@@ -45,7 +46,7 @@ const App = () => {
                 ? <div className="mx-auto mt-20 bg-[#292929] w-full md:w-4/6 py-10 rounded-md text-white">
                     <div className="w-10/12 mx-auto">
                       <p className="text-start text-4xl font-bold">Welcome</p>
-                      <p className="mt-2 text-base">By logging in you accept our <a href="/">Privacy Policy</a> and <a href="/">Terms of Service</a>.</p>
+                      <p className="mt-2 text-base">By logging in you accept our <Link href="/">Privacy Policy</Link> and <Link href="/">Terms of Service</Link>.</p>
                       <div className="mt-8 flex flex-col space-y-2">
                         <button className='btn flex w-full p-2 rounded-lg h-11 items-center justify-center space-x-2 bg-white font-semibold text-black hover:bg-white/80' onClick={handleContinueWithGoogle}>
                           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" enableBackground="new 0 0 48 48" className="text-xl" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12
