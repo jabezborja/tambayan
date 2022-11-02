@@ -5,14 +5,20 @@ export default function handler(req, res) {
     
     if (req.method !== "POST") return res.status(405);
 
-    const bot = getDocument("bots", req.body.botId);
+    const botDoc = getDocument("bots", req.body.botId);
 
-    bot.then((data) => {
-        if (data.accessKey !== req.body.accessKey) {
+    botDoc.then((bot) => {
+        if (bot.accessKey !== req.body.accessKey) {
             return res.status(401).send({ error: "Wrong accessKey. Access denied.", success: false })
         }
 
-        const message = new Message(data, req.body.message, Date());
+        const message = new Message(
+            Date().toString(), // ID
+            bot,
+            req.body.message,
+            null,
+            Date()
+        );
 
         updateMessages("rooms", req.body.roomId, message.toJson())
             .then(([ success, err ]) => {

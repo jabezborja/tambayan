@@ -14,7 +14,7 @@ export default function handler(req, res) {
         [], // Messages
         req.body.password,
         req.body.isPublic,
-        [], // Bots
+        [], // Installed Bots
         [], // Bot Commands
         req.body.dateCreated
     );

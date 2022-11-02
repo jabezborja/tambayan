@@ -28,5 +28,7 @@ export default async function handler(req, res) {
             roomId: req.body.roomId,
             message: `<p>${messageToBeSent}</p>`
         })
-    })
+    });
+
+    res.status(200).send({ success: true });
 }

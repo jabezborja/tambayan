@@ -55,7 +55,7 @@ const updateBots = async (collectionName, documentId, update) => {
     const ref = doc(db, collectionName, documentId);
 
     try {
-        await updateDoc(ref, { bots: arrayUnion(update) });
+        await updateDoc(ref, { installedBots: arrayUnion(update) });
         
         return [ true, null ];
     } catch (e) {
