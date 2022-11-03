@@ -3,37 +3,35 @@ import Message from "../../../models/message";
 
 const fireBotsCallback = async (room, roomId, message) => {
 
+    const botsFired = [];
+
     for (let i = 0; i < room.installedBots.length; i++) {
 
         const bot = room.installedBots[i];
 
         if (message.message.includes('/' + bot.botCommand)) {
 
-            try {
-                console.log(`Command for ${bot.displayName} has been fired.`);
-                
-                const res = await fetch(bot.callbackUrl, {
+            console.log(`Command for ${bot.displayName} has been fired.`);
+            
+            botsFired.push(
+                await fetch(bot.callbackUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         roomId: roomId,
                         accessKey: bot.accessKey,
                         message: message,
-                        callback: 'https://tambayan.link/api/bots/botMessage'
+                        messengerUrl: 'https://tambayan.link/api/bots/botMessage'
                     })
-                });
-    
-                const data = await res.json();
-    
-                console.log(`Call for ${bot.callbackUrl} is a ${data.success ? "success" : "failure"}.`);
-                
-                if (!data.success) console.log("Failure: " + data.error);
-
-            } catch (err) {
-                console.error(err.message);
-            }
+                })
+            )
         }
     }
+
+    return Promise.all(botsFired)
+        .then((data) => {
+            console.log(data[0].status, data[0].statusText);
+        })
 }
 
 export default function handler(req, res) {

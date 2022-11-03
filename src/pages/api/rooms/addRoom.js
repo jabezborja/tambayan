@@ -21,11 +21,11 @@ export default function handler(req, res) {
         
         addDocument("rooms", room.toJson())
             .then(async (id) => {
-                const rodulfoBotId = "kec1nXCEtzeXverw3fZD";
-                const rodulfoBotAccessKey = "6d8f5fdf-a7b2-4669-aee5-c65cfa4d4523";
+                const rodulfoBotId = inProduction ? "kec1nXCEtzeXverw3fZD" : 'm7O7fDTVyM6j4AtLpVQH';
+                const rodulfoBotAccessKey = inProduction ? "6d8f5fdf-a7b2-4669-aee5-c65cfa4d4523" : 'cdcac631-f569-4082-b062-977e25f71278';
 
                 // Install Rodulfo Bot to the Tambayan room
-                await fetch('https://tambayan.link/api/bots/addBot', {
+                await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/addBot`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -36,7 +36,7 @@ export default function handler(req, res) {
                 })
 
                 // Initial Rodulfo message.
-                await fetch('https://tambayan.link/api/bots/botMessage', {
+                await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
