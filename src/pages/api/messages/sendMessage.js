@@ -5,6 +5,8 @@ const fireBotsCallback = async (room, roomId, message) => {
 
     for (let i = 0; i < room.installedBots.length; i++) {
 
+        const bot = room.installedBots[i];
+
         if (message.message.includes('/' + bot.botCommand)) {
 
             try {
