@@ -36,7 +36,7 @@ export default function handler(req, res) {
                 })
 
                 // Initial Rodulfo message.
-                await fetch('https://tambayan.link/api/bots/addBot', {
+                await fetch('https://tambayan.link/api/bots/botMessage', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

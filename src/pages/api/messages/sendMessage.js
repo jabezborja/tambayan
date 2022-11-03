@@ -8,7 +8,7 @@ const fireBotsCallback = (room, roomId, message) => {
 
         if (message.message.includes('/' + bot.botCommand)) {
 
-            await fetch(bot.callbackUrl, {
+            const res = await fetch(bot.callbackUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -18,6 +18,10 @@ const fireBotsCallback = (room, roomId, message) => {
                     callback: 'https://tambayan.link/api/bots/botMessage'
                 })
             });
+
+            const data = await res.data();
+
+            console.log(data);
 
             return;
         }
