@@ -21,8 +21,8 @@ export default function handler(req, res) {
         
         addDocument("rooms", room.toJson())
             .then(async (id) => {
-                const rodulfoBotId = "m7O7fDTVyM6j4AtLpVQH";
-                const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
+                const rodulfoBotId = "kec1nXCEtzeXverw3fZD";
+                const rodulfoBotAccessKey = "6d8f5fdf-a7b2-4669-aee5-c65cfa4d4523";
 
                 // Install Rodulfo Bot to the Tambayan room
                 await fetch('https://tambayan.link/api/bots/addBot', {
