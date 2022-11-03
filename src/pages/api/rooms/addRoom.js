@@ -4,51 +4,51 @@ import { inProduction } from "../../../utils/environment";
 
 
 export default function handler(req, res) {
+    return new Promise((resolve, reject) => {
+        if (req.method !== "POST") return res.status(405);
 
-    if (req.method !== "POST") return res.status(405);
+        const room = new Room(
+            req.body.roomName,
+            req.body.description,
+            req.body.roomOwner,
+            [], // Messages
+            req.body.password,
+            req.body.isPublic,
+            [], // Installed Bots
+            [], // Bot Commands
+            req.body.dateCreated
+        );
+        
+        addDocument("rooms", room.toJson())
+            .then(async (id) => {
+                const rodulfoBotId = "m7O7fDTVyM6j4AtLpVQH";
+                const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
 
-    const room = new Room(
-        req.body.roomName,
-        req.body.description,
-        req.body.roomOwner,
-        [], // Messages
-        req.body.password,
-        req.body.isPublic,
-        [], // Installed Bots
-        [], // Bot Commands
-        req.body.dateCreated
-    );
-    
-    const roomDoc = addDocument("rooms", room.toJson());
+                // Install Rodulfo Bot to the Tambayan room
+                await fetch('https://tambayan.link/api/bots/addBot', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        botId: rodulfoBotId,
+                        accessKey: rodulfoBotAccessKey,
+                        roomId: id
+                    })
+                })
 
-    roomDoc.then(async (id) => {
-        const rodulfoBotId = "m7O7fDTVyM6j4AtLpVQH";
-        const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
+                // Initial Rodulfo message.
+                await fetch('https://tambayan.link/api/bots/botMessage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        botId: rodulfoBotId,
+                        accessKey: rodulfoBotAccessKey,
+                        roomId: id,
+                        message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/chat?room=" + id + "</strong>"
+                    })
+                })
 
-        // Install Rodulfo Bot to the Tambayan room
-        await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/addBot`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                botId: rodulfoBotId,
-                accessKey: rodulfoBotAccessKey,
-                roomId: id
-            })
-        })
-
-        // Initial Rodulfo message.
-        await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                botId: rodulfoBotId,
-                accessKey: rodulfoBotAccessKey,
-                roomId: id,
-                message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/chat?room=" + id + "</strong>"
-            })
-        })
-
-        res.status(200).send({ roomId: id, success: true });
-    });
-
+                res.status(200).send({ roomId: id, success: true });
+                resolve();
+            });
+    })
 }

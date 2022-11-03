@@ -86,6 +86,9 @@ const ChatView = ({ data, id }) => {
 
         e.preventDefault();
 
+        setMessage("");
+        setReplyingTo(null);
+
         await fetch('/api/messages/sendMessage', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -98,8 +101,6 @@ const ChatView = ({ data, id }) => {
             })
         });
         
-        setMessage("");
-        setReplyingTo(null);
     };
 
     return (
