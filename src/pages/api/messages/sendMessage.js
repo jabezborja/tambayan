@@ -2,38 +2,25 @@ import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 
 const fireBotsCallback = async (room, roomId, message) => {
-
-    for (let i = 0; i < room.installedBots.length; i++) {
-
-        const bot = room.installedBots[i];
-
-        if (message.message.includes('/' + bot.botCommand)) {
-
-            try {
-                console.log(`Command for ${bot.displayName} has been fired.`);
-                
-                const res = await fetch(bot.callbackUrl, {
+    return Promise.all(
+        room.installedBots.map((bot) => {
+            if (message.message.includes('/' + bot.botCommand)) {
+                return fetch(bot.callbackUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         roomId: roomId,
                         accessKey: bot.accessKey,
                         message: message,
-                        callback: 'https://tambayan.link/api/bots/botMessage'
+                        messengerUrl: 'https://tambayan.link/api/bots/botMessage'
                     })
-                });
-    
-                const data = await res.json();
-    
-                console.log(`Call for ${bot.callbackUrl} is a ${data.success ? "success" : "failure"}.`);
-                
-                if (!data.success) console.log("Failure: " + data.error);
+                })
+                    .then(data => data.json())
+                    .then(data => console.log(data))
 
-            } catch (err) {
-                console.error(err.message);
             }
-        }
-    }
+        })
+    ).then(() => {return});
 }
 
 export default function handler(req, res) {
@@ -57,7 +44,7 @@ export default function handler(req, res) {
                     .then(([ success, err ]) => {
                         if (success) {
                             fireBotsCallback(data, req.body.roomId, message.toJson())
-                                .then(() => console.log("Bots fired."))
+                                .then(() => console.log("Bots fired."));
 
                             res.status(200).send({ success: true });
                             resolve()
