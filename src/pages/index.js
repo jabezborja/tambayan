@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { signInWithGithub, signInWithGoogle } from "../firebase/auth";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const App = () => {
 
@@ -42,9 +43,10 @@ const App = () => {
           <div>
             <div>
               {!signingIn
-                ? <div className="mt-20 bg-[#292929] w-full py-10 rounded-md">
+                ? <div className="mx-auto mt-20 bg-[#292929] w-full md:w-4/6 py-10 rounded-md text-white">
                     <div className="w-10/12 mx-auto">
-                      <p className="text-center text-4xl text-white font-bold">Create an Account</p>
+                      <p className="text-start text-4xl font-bold">Welcome</p>
+                      <p className="mt-2 text-base">By logging in you accept our <Link href="/">Privacy Policy</Link> and <Link href="/">Terms of Service</Link>.</p>
                       <div className="mt-8 flex flex-col space-y-2">
                         <button className='btn flex w-full p-2 rounded-lg h-11 items-center justify-center space-x-2 bg-white font-semibold text-black hover:bg-white/80' onClick={handleContinueWithGoogle}>
                           <svg stroke="currentColor" fill="currentColor" strokeWidth="0" version="1.1" x="0px" y="0px" viewBox="0 0 48 48" enableBackground="new 0 0 48 48" className="text-xl" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12
@@ -54,9 +56,9 @@ const App = () => {
                             c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571
                             c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
                           </svg>
-                          <p>Google</p>
+                          <p>Login with Google</p>
                         </button>
-                        <button className='bg-[#333333] text-white p-2 rounded-lg h-11 font-bold' onClick={handleContinueWithGithub}>GitHub</button>
+                        <button className='bg-[#333333] text-white p-2 rounded-lg h-11 font-bold' onClick={handleContinueWithGithub}>Login with GitHub</button>
                       </div>
                     </div>
                   </div>
