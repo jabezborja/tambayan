@@ -19,7 +19,7 @@ export default async function handler(req, res) {
         messageToBeSent = "Beep boop! That doesn't exist in my vocabulary."
     }
     
-    fetch(req.body.callback, {
+    await fetch(req.body.callback, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
