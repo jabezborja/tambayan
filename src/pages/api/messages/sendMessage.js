@@ -3,16 +3,13 @@ import Message from "../../../models/message";
 
 const fireBotsCallback = async (room, roomId, message) => {
 
-    const botsFired = [];
+    let botsFired = [];
 
     for (let i = 0; i < room.installedBots.length; i++) {
 
         const bot = room.installedBots[i];
 
-        if (message.message.includes('/' + bot.botCommand)) {
-
-            console.log(`Command for ${bot.displayName} has been fired.`);
-            
+        if (message.message.includes('/' + bot.botCommand)) {            
             botsFired.push(
                 await fetch(bot.callbackUrl, {
                     method: 'POST',
@@ -30,7 +27,7 @@ const fireBotsCallback = async (room, roomId, message) => {
 
     return Promise.all(botsFired)
         .then((data) => {
-            console.log(data[0].status, data[0].statusText);
+            botsFired = [];
         })
 }
 
