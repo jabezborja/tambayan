@@ -1,5 +1,5 @@
 # Tambayan: sa Gedli
-<a href="https://tambayan.netlify.app">Tambayan</a> is an open-source chat platform where you can chat with other people, make more friends, and tumambay. Join Tambayan rooms, start chatting with people, have fun with bots, and much more!
+<a href="https://tambayan.link">Tambayan</a> is an open-source chat platform where you can chat with other people, make more friends, and tumambay. Join Tambayan rooms, start chatting with people, have fun with bots, and much more!
 
 ## Contributions
 

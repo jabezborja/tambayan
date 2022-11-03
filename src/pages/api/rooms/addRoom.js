@@ -26,7 +26,7 @@ export default function handler(req, res) {
         const rodulfoBotAccessKey = "cdcac631-f569-4082-b062-977e25f71278";
 
         // Install Rodulfo Bot to the Tambayan room
-        await fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/addBot`, {
+        await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/addBot`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -37,14 +37,14 @@ export default function handler(req, res) {
         })
 
         // Initial Rodulfo message.
-        await fetch(`${inProduction ? 'https://tambayan.netlify.app' : 'http://localhost:3000'}/api/bots/botMessage`, {
+        await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 botId: rodulfoBotId,
                 accessKey: rodulfoBotAccessKey,
                 roomId: id,
-                message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.netlify.app/chat?room=" + id + "</strong>"
+                message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/chat?room=" + id + "</strong>"
             })
         })
 
