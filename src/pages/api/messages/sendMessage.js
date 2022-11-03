@@ -2,16 +2,10 @@ import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 
 const fireBotsCallback = async (room, roomId, message) => {
-
-    let botsFired = [];
-
-    for (let i = 0; i < room.installedBots.length; i++) {
-
-        const bot = room.installedBots[i];
-
-        if (message.message.includes('/' + bot.botCommand)) {            
-            botsFired.push(
-                await fetch(bot.callbackUrl, {
+    return Promise.all(
+        room.installedBots.map((bot) => {
+            if (message.message.includes('/' + bot.botCommand)) {
+                return fetch(bot.callbackUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -21,14 +15,11 @@ const fireBotsCallback = async (room, roomId, message) => {
                         messengerUrl: 'https://tambayan.link/api/bots/botMessage'
                     })
                 })
-            )
-        }
-    }
-
-    return Promise.all(botsFired)
-        .then((data) => {
-            botsFired = [];
+                    .then(data => data.json())
+                    .then(data => console.log(data))
+            }
         })
+    ).then(() => {return});
 }
 
 export default function handler(req, res) {
@@ -52,7 +43,7 @@ export default function handler(req, res) {
                     .then(([ success, err ]) => {
                         if (success) {
                             fireBotsCallback(data, req.body.roomId, message.toJson())
-                                .then(() => console.log("Bots fired."))
+                                .then(() => console.log("Bots fired."));
 
                             res.status(200).send({ success: true });
                             resolve()
