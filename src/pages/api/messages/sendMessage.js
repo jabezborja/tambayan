@@ -1,35 +1,37 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 
-const fireBotsCallback = (room, roomId, message) => {
+const fireBotsCallback = async (room, roomId, message) => {
 
-    room.installedBots.forEach(async (bot) => {
+    for (let i = 0; i < room.installedBots.length; i++) {
 
         if (message.message.includes('/' + bot.botCommand)) {
 
-            console.log(`Command for ${bot.displayName} has been fired.`);
-            
-            const res = await fetch(bot.callbackUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    roomId: roomId,
-                    accessKey: bot.accessKey,
-                    message: message,
-                    callback: 'https://tambayan.link/api/bots/botMessage'
-                })
-            });
-
-            const data = await res.json();
-
-            console.log(`Call for ${bot.callbackUrl} is a ${data.success ? "success" : "failure"}.`);
-            
-            if (!data.success) console.log("Failure: " + data.error);
-
-            return;
-        }
-    });
+            try {
+                console.log(`Command for ${bot.displayName} has been fired.`);
+                
+                const res = await fetch(bot.callbackUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        roomId: roomId,
+                        accessKey: bot.accessKey,
+                        message: message,
+                        callback: 'https://tambayan.link/api/bots/botMessage'
+                    })
+                });
     
+                const data = await res.json();
+    
+                console.log(`Call for ${bot.callbackUrl} is a ${data.success ? "success" : "failure"}.`);
+                
+                if (!data.success) console.log("Failure: " + data.error);
+
+            } catch (err) {
+                console.error(err.message);
+            }
+        }
+    }
 }
 
 export default function handler(req, res) {
@@ -53,6 +55,7 @@ export default function handler(req, res) {
                     .then(([ success, err ]) => {
                         if (success) {
                             fireBotsCallback(data, req.body.roomId, message.toJson())
+                                .then(() => console.log("Bots fired."))
 
                             res.status(200).send({ success: true });
                             resolve()
