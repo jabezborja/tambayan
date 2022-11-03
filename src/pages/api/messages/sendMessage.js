@@ -17,7 +17,6 @@ const fireBotsCallback = async (room, roomId, message) => {
                 })
                     .then(data => data.json())
                     .then(data => console.log(data))
-
             }
         })
     ).then(() => {return});
