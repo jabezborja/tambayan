@@ -4,7 +4,13 @@ import { inProduction } from "../../../utils/environment";
 
 const fireBotsCallback = (room, roomId, message) => {
     room.installedBots.forEach(async (bot) => {
+
+        console.log("Bot", bot)
+
         if (message.message.includes('/' + bot.botCommand)) {
+
+            console.log("Detected includes")
+
             await fetch(bot.callbackUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -15,6 +21,8 @@ const fireBotsCallback = (room, roomId, message) => {
                     callback: 'https://tambayan.link/api/bots/botMessage'
                 })
             });
+
+            console.log("Done")
 
             return;
         }
@@ -41,6 +49,8 @@ export default function handler(req, res) {
             updateMessages("rooms", req.body.roomId, message.toJson())
                 .then(([ success, err ]) => {
                     if (success) {
+
+                        console.log("Success appended")
 
                         fireBotsCallback(data, req.body.roomId, message.toJson())
 
