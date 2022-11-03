@@ -18,8 +18,10 @@ export default async function handler(req, res) {
     } else {
         messageToBeSent = "Beep boop! That doesn't exist in my vocabulary."
     }
+
+    console.log("Fetching from rodulfo")
     
-    fetch(req.body.callback, {
+    await fetch(req.body.callback, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
