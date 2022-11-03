@@ -9,7 +9,8 @@ export default function handler(req, res) {
 
         botDoc.then((bot) => {
             if (bot.accessKey !== req.body.accessKey) {
-                return res.status(401).send({ error: "Wrong accessKey. Access denied.", success: false })
+                res.status(401).send({ error: "Wrong accessKey. Access denied.", success: false });
+                resolve();
             }
 
             const message = new Message(

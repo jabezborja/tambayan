@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             messageToBeSent = "Beep boop! That doesn't exist in my vocabulary."
         }
         
-        await fetch(req.body.callback, {
+        const result = await fetch(req.body.callback, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -30,7 +30,9 @@ export default async function handler(req, res) {
             })
         });
 
-        res.status(200).send({ success: true });
+        const data = await result.json();
+
+        res.status(200).send(data);
         resolve();
     })
 }

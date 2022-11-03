@@ -12,7 +12,7 @@ const fireBotsCallback = (room, roomId, message) => {
                     roomId: roomId,
                     accessKey: bot.accessKey,
                     message: "[]",
-                    callback: `${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`
+                    callback: 'https://tambayan.link/api/bots/botMessage'
                 })
             });
 

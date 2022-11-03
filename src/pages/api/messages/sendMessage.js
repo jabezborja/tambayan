@@ -1,6 +1,5 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
-import { inProduction } from "../../../utils/environment";
 
 const fireBotsCallback = (room, roomId, message) => {
 
@@ -8,6 +7,8 @@ const fireBotsCallback = (room, roomId, message) => {
 
         if (message.message.includes('/' + bot.botCommand)) {
 
+            console.log(`Command for ${bot.displayName} has been fired.`);
+            
             const res = await fetch(bot.callbackUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -19,9 +20,11 @@ const fireBotsCallback = (room, roomId, message) => {
                 })
             });
 
-            const data = await res.data();
+            const data = await res.json();
 
-            console.log(data);
+            console.log(`Call for ${bot.callbackUrl} is a ${data.success ? "success" : "failure"}.`);
+            
+            if (!data.success) console.log("Failure: " + data.error);
 
             return;
         }
