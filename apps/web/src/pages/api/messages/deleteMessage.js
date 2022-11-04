@@ -1,31 +1,23 @@
-import { getDocument, updateMessages } from "../../../firebase/database";
+import { deleteMessage, getMessagesByRoom } from "../../../firebase/database";
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 
-        getDocument("rooms", req.body.roomId)
-            .then((data) => {
+        getMessagesByRoom(req.body.roomId)
+            .then((message) => {
 
-                var message = null;
+                var messageToDelete = null;
 
-                data.messages.forEach((m) => {
-                    if (req.body.messageId === m.messageId) {
-                        message = m;
+                message.forEach((m) => {
+                    if (req.body.messageId === m.data().messageId) {
+                        messageToDelete = m.data();
                     }
-                });
-        
-                updateMessages("rooms", req.body.roomId, message, false)
-                    .then(([ success, err ]) => {
-                        if (success) {
-                            res.status(200).send({ success: true });
-                            resolve()
-                        } else {
-                            res.status(500).send({ success: false, error: err });
-                            resolve();
-                        }
-                    })
+                })
+
+                deleteMessage(req.body.roomId, messageToDelete.messageId);
 
             });
+
     })
 }

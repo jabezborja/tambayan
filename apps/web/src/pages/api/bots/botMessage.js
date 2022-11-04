@@ -1,5 +1,6 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
+import { uuidv4 } from '@firebase/util';
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
@@ -13,14 +14,14 @@ export default (req, res) => {
                 }
 
                 const message = new Message(
-                    Date().toString(), // ID
+                    uuidv4(), // ID
                     bot,
                     req.body.message,
                     null,
                     Date()
                 );
 
-                updateMessages("rooms", req.body.roomId, message.toJson())
+                updateMessages("rooms", req.body.roomId, message.id, message.toJson())
                     .then(([ success, err ]) => {
                         if (success) {
                             res.status(200).send({ success: true });

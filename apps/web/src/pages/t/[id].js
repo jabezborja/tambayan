@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { listenToDocument } from '../../firebase/database';
+import { getMessagesByRoom, listenToMessages } from '../../firebase/database';
 import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
 import PasswordModal from '../../components/passwordModal';
@@ -55,15 +55,18 @@ const ChatView = ({ roomData, id }) => {
             setShowPasswordModal(true);
         }
 
-        setRoom(roomData);
-        setMessages(roomData.messages)
+        getMessagesByRoom(id)
+            .then((messages) => {
+                messages.forEach((message) => {
+                    setMessages(prevState => [...prevState, message.data()])
+                })
+            })
 
-        const messageListener = listenToDocument((doc) => {
-            var roomData = doc.data();
-            
-            setMessages(roomData.messages)
-            setRoom(roomData)    
-        }, "rooms", id);
+        setRoom(roomData);
+
+        const messageListener = listenToMessages(id, (messages) => {            
+            setMessages(messages);
+        });
 
         return () => {
             messageListener();

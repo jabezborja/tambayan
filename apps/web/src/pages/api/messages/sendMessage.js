@@ -2,6 +2,7 @@ import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 import { inProduction } from '../../../utils/environment';
 import { checkIsBotCommand } from "../../../utils/botUtils";
+import { uuidv4 } from '@firebase/util';
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
@@ -13,7 +14,7 @@ export default (req, res) => {
             .then((data) => {
 
                 const message = new Message(
-                    Date().toString(), // Message ID
+                    uuidv4(), // Message ID
                     req.body.user,
                     req.body.message,
                     req.body.repliedTo,
@@ -27,7 +28,7 @@ export default (req, res) => {
                     message.message = message.message.replace(`/${botCommand}`, `\`/${botCommand}\``);
                 }
         
-                updateMessages("rooms", req.body.roomId, message.toJson())
+                updateMessages("rooms", req.body.roomId, message.id, message.toJson())
                     .then(([ success, err ]) => {
                         if (success) {
                             fireBotsCallback(data, req.body.roomId, message.toJson())
