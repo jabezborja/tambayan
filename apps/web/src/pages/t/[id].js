@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getMessagesByRoom, listenToMessages } from '../../firebase/database';
+import moment from 'moment'
 import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
 import PasswordModal from '../../components/passwordModal';
@@ -98,9 +99,9 @@ const ChatView = ({ roomData, id }) => {
 
         // Temporarily append `message` data for user to know that their message is still sending.
         setMessages(old => [...old, {
-            dateSent: new Date(),
+            dateSent: moment().toDate(),
             message: "Sending message: " + message,
-            messageId: Date().toString(),
+            messageId: "message_sending",
             repliedTo: messages[replyingTo],
             user: user
         }])

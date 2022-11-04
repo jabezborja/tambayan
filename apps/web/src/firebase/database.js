@@ -30,7 +30,7 @@ const deleteDocument = async (collectionName, documentId) => {
     return await deleteDoc(docRef);
 }
 
-const getDocuments = async (collectionName, by) => {
+const getDocuments = async (collectionName) => {
     const collectionRef = collection(db, collectionName);
 
     return await getDocs(query(collectionRef, orderBy("dateCreated", "asc")));

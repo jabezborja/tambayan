@@ -2,6 +2,8 @@ import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 import { uuidv4 } from '@firebase/util';
 
+import moment from 'moment';
+
 export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
@@ -13,12 +15,14 @@ export default (req, res) => {
                     resolve();
                 }
 
+                console.log(moment())
+
                 const message = new Message(
                     uuidv4(), // ID
                     bot,
                     req.body.message,
                     null,
-                    Date()
+                    moment().toDate()
                 );
 
                 updateMessages("rooms", req.body.roomId, message.id, message.toJson())
