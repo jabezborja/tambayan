@@ -63,7 +63,7 @@ const updateBots = async (collectionName, documentId, update) => {
     }
 }
 
-const listenToDocument = (func, collectionName, documentId) => {
+const listenToDocument = (collectionName, documentId, func) => {
     const unsub = onSnapshot(doc(db, collectionName, documentId), (doc) => {
         func(doc);
     })

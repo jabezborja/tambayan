@@ -19,19 +19,19 @@ export async function getServerSideProps({ params, req }) {
         body: JSON.stringify({ "roomId": id })
     });
 
-    const data = await room.json();
+    const roomData = await room.json();
 
-    return { props: { data, id } }
+    return { props: { roomData, id } }
 
 }
 
-const ChatView = ({ data, id }) => {
+const ChatView = ({ roomData, id }) => {
 
     const router = useRouter();
 
     const user = useSelector(state => state.user.user);
 
-    const [ roomData, setRoomData ] = useState();
+    const [ room, setRoom ] = useState();
     const [ messages, setMessages ] = useState([]);
     const [ selectedMessageIndex, setSelectedMessageIndex ] = useState(-1);
     const [ showPasswordModal, setShowPasswordModal ] = useState();
@@ -51,18 +51,18 @@ const ChatView = ({ data, id }) => {
             return () => {}
         }
 
-        if (!data.isPublic && user.uid !== data.roomOwner.uid) {
+        if (!roomData.isPublic && user.uid !== roomData.roomOwner.uid) {
             setShowPasswordModal(true);
         }
 
-        setRoomData(data);
-        setMessages(data.messages)
+        setRoom(roomData);
+        setMessages(roomData.messages)
 
         const messageListener = listenToDocument((doc) => {
-            var data = doc.data();
+            var roomData = doc.data();
             
-            setMessages(data.messages)
-            setRoomData(data)    
+            setMessages(roomData.messages)
+            setRoom(roomData)    
         }, "rooms", id);
 
         return () => {
@@ -111,7 +111,7 @@ const ChatView = ({ data, id }) => {
             body: JSON.stringify({
                 roomId: id,
                 user: user,
-                moderator: user.uid === roomData.roomOwner.uid,
+                moderator: user.uid === room.roomOwner.uid,
                 repliedTo: replyingTo ? messages[replyingTo] : null,
                 message: message
             })
@@ -119,23 +119,23 @@ const ChatView = ({ data, id }) => {
         
     };
 
-    if (showPasswordModal) return <PasswordModal room={roomData} state={setShowPasswordModal} />
+    if (showPasswordModal) return <PasswordModal room={room} state={setShowPasswordModal} />
 
     return (
         <div className='flex flex-col justify-center h-screen'>
 
             <Head>
-                <title>Tambayan: {roomData ? roomData.roomName : ' sa Gedli'}</title>
+                <title>Tambayan: {room ? room.roomName : ' sa Gedli'}</title>
                 <meta name="description" content="A new chat app" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <section className='h-fit bg-[#222222] border-b border-[#4d4d4d] w-screen pl-10 py-8 flex justify-between'>
                 <p className='text-xl text-center text-white'>
-                    {roomData
-                        ? roomData.isPublic
-                            ? <p>{roomData.roomName} by <span className='font-bold'>{roomData.roomOwner.displayName}</span></p>
-                            : `${roomData.roomName} - Private Tambayan`
+                    {room
+                        ? room.isPublic
+                            ? <p>{room.roomName} by <span className='font-bold'>{room.roomOwner.displayName}</span></p>
+                            : `${room.roomName} - Private Tambayan`
                         : "Loading..."
                     }
                 </p>

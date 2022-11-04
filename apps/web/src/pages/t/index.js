@@ -20,9 +20,9 @@ const Explore = ({ data }) => {
 
     const router = useRouter();
 
-    const [ rooms, setRooms ] = useState([]);
     const [ showCreateRoomModal, setShowCreateRoomModal ] = useState(false);
 
+    const rooms = data.rooms;
     const user = useSelector(state => state.user.user);
 
     useEffect(() => {
@@ -32,12 +32,6 @@ const Explore = ({ data }) => {
             router.replace('/');
             return () => {};
         };
-        
-        setRooms([]);
-
-        data.rooms.forEach((room) => {
-            setRooms(val => [...val, room])
-        })
     }, [user]);
     
     const handleLogout = async (e) => await signOutAccount();
