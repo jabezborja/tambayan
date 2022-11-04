@@ -11,7 +11,8 @@ const PasswordModal = ({ room, state }) => {
     e.preventDefault();
 
     if (password === room.password) {
-      return router.push('/t/' + room.id);
+      state(false)
+      return;
     }
 
     alert("Wrong password")
@@ -44,7 +45,7 @@ const PasswordModal = ({ room, state }) => {
                 </div>
                 <div className="bg-[#313131] px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button type="submit" className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">Join</button>
-                  <button onClick={(e) => state(false)} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-[#222222] px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-[#383838] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Close</button>
+                  <button onClick={() => router.back()} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-[#222222] px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-[#383838] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Return</button>
               </div>
               </form>
             </div>

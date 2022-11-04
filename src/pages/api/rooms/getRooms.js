@@ -1,6 +1,6 @@
 import { getDocuments } from "../../../firebase/database";
 
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "GET") return res.status(405);
 

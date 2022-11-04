@@ -26,15 +26,18 @@ const Explore = ({ data }) => {
     const user = useSelector(state => state.user.user);
 
     useEffect(() => {
+        if (!user) {
+            alert("Please login to continue.")
+
+            router.replace('/');
+            return () => {};
+        };
+        
         setRooms([]);
 
         data.rooms.forEach((room) => {
             setRooms(val => [...val, room])
         })
-    }, [])
-
-    useEffect(() => {
-        if (!user) router.replace('/');
     }, [user]);
     
     const handleLogout = async (e) => await signOutAccount();

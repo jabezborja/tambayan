@@ -1,6 +1,6 @@
 import { getDocument, updateBots } from "../../../firebase/database";
 
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 

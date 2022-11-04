@@ -1,9 +1,8 @@
-import { addDocument, updateMessages } from "../../../firebase/database";
+import { addDocument } from "../../../firebase/database";
 import Room from "../../../models/room";
 import { inProduction } from "../../../utils/environment";
 
-
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 
