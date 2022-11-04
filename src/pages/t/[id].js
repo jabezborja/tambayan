@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { listenToDocument } from '../../firebase/database';
 import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
+import PasswordModal from '../../components/passwordModal';
 
 export async function getServerSideProps({ params, req }) {
 
@@ -33,6 +34,7 @@ const ChatView = ({ data, id }) => {
     const [ roomData, setRoomData ] = useState();
     const [ messages, setMessages ] = useState([]);
     const [ selectedMessageIndex, setSelectedMessageIndex ] = useState(-1);
+    const [ showPasswordModal, setShowPasswordModal ] = useState();
 
     const [ message, setMessage ] = useState('');
     const [ replyingTo, setReplyingTo ] = useState(null);
@@ -43,9 +45,14 @@ const ChatView = ({ data, id }) => {
     useEffect(() => {
 
         if (!user) {
-            alert("Please sign in to continue.");
+            alert("You must login to enter this tambayan room.");
 
-            return () => router.push('/');
+            router.replace('/');
+            return () => {}
+        }
+
+        if (!data.isPublic && user.uid !== data.roomOwner.uid) {
+            setShowPasswordModal(true);
         }
 
         setRoomData(data);
@@ -65,7 +72,7 @@ const ChatView = ({ data, id }) => {
     }, []);
 
     useEffect(() => {
-        autoScroller.current.scrollIntoView({ behavior: 'smooth' })
+        if (autoScroller.current) autoScroller.current.scrollIntoView({ behavior: 'smooth' })
     }, [messages])
 
     const handleMessage = e => {
@@ -86,6 +93,7 @@ const ChatView = ({ data, id }) => {
 
         e.preventDefault();
 
+        // Temporarily append `message` data for user to know that their message is still sending.
         setMessages(old => [...old, {
             dateSent: new Date(),
             message: "Sending message: " + message,
@@ -110,6 +118,8 @@ const ChatView = ({ data, id }) => {
         });
         
     };
+
+    if (showPasswordModal) return <PasswordModal room={roomData} state={setShowPasswordModal} />
 
     return (
         <div className='flex flex-col justify-center h-screen'>
@@ -142,7 +152,7 @@ const ChatView = ({ data, id }) => {
                             user={user}
                             textInput={textInput}
                             selectedMessageIndex={{ selectedMessageIndex, setSelectedMessageIndex }}
-                            replyingTo={{ replyingTo, setReplyingTo }}
+                            setReplyingTo={setReplyingTo}
                         />) }
                 </div>
 

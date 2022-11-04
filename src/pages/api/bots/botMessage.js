@@ -1,7 +1,7 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
 
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 

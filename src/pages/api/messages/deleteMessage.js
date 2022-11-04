@@ -1,27 +1,6 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
-import Message from "../../../models/message";
-import { inProduction } from "../../../utils/environment";
 
-const fireBotsCallback = (room, roomId, message) => {
-    room.bots.forEach(async (bot) => {
-        if (message.message.includes('/' + bot.botCommand)) {
-            await fetch(bot.callbackUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    roomId: roomId,
-                    accessKey: bot.accessKey,
-                    message: "[]",
-                    callback: 'https://tambayan.link/api/bots/botMessage'
-                })
-            });
-
-            return;
-        }
-    });
-}
-
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 

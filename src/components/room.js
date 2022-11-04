@@ -6,19 +6,7 @@ const Room = ({ room }) => {
     
     const router = useRouter();
 
-    const [ showPasswordModal, setShowPasswordModal ] = useState();
-
-    const handleRoomEntry = (e) => {
-        if (room.isPublic) {
-            return router.push('/t/' + room.id);
-        }
-
-        setShowPasswordModal(true);
-    }
-
-    if (showPasswordModal) return <PasswordModal room={room} state={setShowPasswordModal} />
-
-    return <div onClick={handleRoomEntry} className="hover:cursor-pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
+    return <div onClick={() => router.push('/t/' + room.id)} className="hover:cursor-pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
         <div className="flex justify-between items-center">
             <div>
                 <p className="font-bold">{room.roomName}</p>

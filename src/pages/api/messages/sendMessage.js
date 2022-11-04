@@ -3,7 +3,7 @@ import Message from "../../../models/message";
 import { inProduction } from '../../../utils/environment';
 import { checkIsBotCommand } from "../../../utils/botUtils";
 
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 

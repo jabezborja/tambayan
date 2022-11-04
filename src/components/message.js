@@ -8,7 +8,7 @@ const Message = (props) => {
     const data = props.data;
 
     const { selectedMessageIndex, setSelectedMessageIndex } = props.selectedMessageIndex;
-    const { replyingTo, setReplyingTo } = props.replyingTo;
+    const setReplyingTo = props.setReplyingTo;
 
     const isOwnChat = data.user.uid === props.user.uid;
 

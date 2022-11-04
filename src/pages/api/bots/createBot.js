@@ -2,7 +2,7 @@ import { addDocument } from "../../../firebase/database";
 import User from "../../../models/user";
 import { uuidv4 } from "@firebase/util";
 
-export default function handler(req, res) {
+export default (req, res) => {
     return new Promise((resolve, reject) => {
         if (req.method !== "POST") return res.status(405);
 
