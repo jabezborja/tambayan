@@ -7,6 +7,7 @@ import moment from 'moment'
 import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
 import PasswordModal from '../../components/passwordModal';
+import { truncate } from '../../utils/stringUtils';
 
 export async function getServerSideProps({ params, req }) {
 
@@ -108,6 +109,12 @@ const ChatView = ({ roomData, id }) => {
 
         setMessage("");
         setReplyingTo(null);
+
+        if (replyingTo) {
+            messages[replyingTo].message = truncate(messages[replyingTo].message)
+        }
+
+        console.log(messages[replyingTo])
 
         await fetch('/api/messages/sendMessage', {
             method: 'POST',
