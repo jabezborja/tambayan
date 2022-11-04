@@ -1,0 +1,23 @@
+{
+  "name": "rodulfo",
+  "version": "0.0.1",
+  "description": "The official Tambayan bot moderator API client.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rodulfo",
+    "bot"
+  ],
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "node-fetch": "^3.2.10"
+  },
+  "author": "Jabez Torre",
+  "license": "MIT"
+}
