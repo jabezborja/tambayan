@@ -16,7 +16,7 @@ const fireBotsCallback = async (room, roomId, message) => {
                     roomId: roomId,
                     accessKey: bot.accessKey,
                     message: message,
-                    callback: `https://tambayan.netlify.app/api/bots/botMessage`
+                    callback: `${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`
                 })
             });
         }
