@@ -98,7 +98,7 @@ const ChatView = ({ data, id }) => {
             dateSent: new Date(),
             message: "Sending message: " + message,
             messageId: Date().toString(),
-            repliedTo: replyingTo,
+            repliedTo: messages[replyingTo],
             user: user
         }])
 
