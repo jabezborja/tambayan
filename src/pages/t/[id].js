@@ -86,6 +86,14 @@ const ChatView = ({ data, id }) => {
 
         e.preventDefault();
 
+        setMessages(old => [...old, {
+            dateSent: new Date(),
+            message: "Sending message: " + message,
+            messageId: Date().toString(),
+            repliedTo: replyingTo,
+            user: user
+        }])
+
         setMessage("");
         setReplyingTo(null);
 
