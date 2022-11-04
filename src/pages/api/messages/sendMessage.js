@@ -1,28 +1,7 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
-
-const fireBotsCallback = async (room, roomId, message) => {
-
-    for (let i = 0; i < room.installedBots.length; i++) {
-
-        const bot = room.installedBots[i];
-
-        if (message.message.includes('/' + bot.botCommand)) {
-
-            await fetch(bot.callbackUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    roomId: roomId,
-                    accessKey: bot.accessKey,
-                    message: message,
-                    callback: `${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`
-                })
-            });
-        }
-    }
-
-}
+import { inProduction } from '../../../utils/environment';
+import { checkIsBotCommand } from "../../../utils/botUtils";
 
 export default function handler(req, res) {
     return new Promise((resolve, reject) => {
@@ -40,6 +19,13 @@ export default function handler(req, res) {
                     req.body.repliedTo,
                     new Date()
                 );
+
+                const [ isBotCommand, botCommand ] = checkIsBotCommand(data.installedBots, message.message);
+
+                if (isBotCommand) {
+                    // If the message is a Bot Command, modify the message to `/botcommand` for markdown.
+                    message.message = message.message.replace(`/${botCommand}`, `\`/${botCommand}\``);
+                }
         
                 updateMessages("rooms", req.body.roomId, message.toJson())
                     .then(([ success, err ]) => {
@@ -57,4 +43,28 @@ export default function handler(req, res) {
 
             });
     })
+}
+
+const fireBotsCallback = async (room, roomId, message) => {
+
+    for (let i = 0; i < room.installedBots.length; i++) {
+
+        const bot = room.installedBots[i];
+        const botSlashCommand = '/' + bot.botCommand;
+
+        if (message.message.includes(botSlashCommand)) {
+
+            await fetch(bot.callbackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    roomId: roomId,
+                    accessKey: bot.accessKey,
+                    message: message,
+                    callback: `${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`
+                })
+            });
+        }
+    }
+
 }
