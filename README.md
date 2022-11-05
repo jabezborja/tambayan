@@ -1,5 +1,5 @@
 # Tambayan: sa Gedli
-<a href="https://tambayan.link">Tambayan</a> is an open-source chat platform where you can chat with other people, make more friends, and tumambay. Join Tambayan rooms, start chatting with people, have fun with bots, and much more!
+<a href="https://tambayan.link">Tambayan</a> is an open-source public chat platform where you can meet other people and tumambay. Create a public or an invite-only place to socialize, talk about certain topics, and hang out. Join Tambayan rooms, chat with people, have fun with user-generated bots, and much more!
 
 ## Contributions
 
@@ -17,7 +17,7 @@ If you like this project, please consider giving it a start. Tambayan is open to
 See [CONTRIBUTING.md](https://github.com/jabezborja/tambayan/blob/main/CREATE_A_BOT.md)
 
 ### Want to create your own Tambayan Bot? Follow:
-[HOW_TO_CREATE_A_BOT.md](https://github.com/jabezborja/tambayan/blob/main/CREATE_A_BOT.md)
+[CREATE_A_BOT.md](https://github.com/jabezborja/tambayan/blob/main/CREATE_A_BOT.md)
 
 ### Contributors
 <a href="https://github.com/jabezborja/tambayan/graphs/contributors">
