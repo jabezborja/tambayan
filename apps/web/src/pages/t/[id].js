@@ -141,18 +141,28 @@ const ChatView = ({ roomData, id }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <section className='h-fit bg-[#222222] border-b border-[#4d4d4d] w-screen pl-10 py-8 flex justify-between'>
-                <p className='text-xl text-center text-white'>
+            <section className='h-fit bg-[#1a1a1a] border-b border-[#3d3d3d] w-screen py-8 flex justify-between'>
+                <div className='mx-5 md:mx-10 flex justify-between items-center w-full text-center md:text-start text-xl '>
+                    <button onClick={() => router.back()}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                        </svg>
+                    </button>
                     {room
                         ? room.isPublic
                             ? <p>{room.roomName} by <span className='font-bold'>{room.roomOwner.displayName}</span></p>
                             : `${room.roomName} - Private Tambayan`
                         : "Loading..."
                     }
-                </p>
+                    <button>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                        </svg>
+                    </button>
+                </div>
             </section>
 
-            <div className='bg-[#222222] overflow-auto h-5/6'>
+            <div className='bg-[#1a1a1a] overflow-auto h-5/6'>
                 <div className='flex flex-col text-right mx-3 my-2'>
                     { messages.map((message, i) => 
                         <MessageView
@@ -170,22 +180,27 @@ const ChatView = ({ roomData, id }) => {
                 <div ref={autoScroller}></div>
             </div>
 
-            <div className='h-fit bg-[#222222] border-t border-[#4d4d4d]'>
+            <div className='h-fit bg-[#1a1a1a] border-t border-[#3d3d3d]'>
                 {replyingTo
-                    && <div className='mx-5 mt-5 flex flex-row-reverse items-center justify-between'>
+                    && <div className='mx-5 my-5 flex flex-row-reverse items-center justify-between'>
                         <button onClick={() => setReplyingTo(null)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
 
-                        <p className='text-white'>Replying to <b>{messages[replyingTo].user.displayName}</b></p>
+                        <p className=''>Replying to <b>{messages[replyingTo].user.displayName}</b></p>
                     </div>
                 }
 
-                <form className='border-[#4d4d4d] w-screen px-5 py-5 flex' onSubmit={sendMessage}>
-                    <textarea required placeholder='Write a message...' ref={textInput} value={message} onChange={handleCancelLinebreak} onKeyUp={handleMessage} className='bg-[#4d4d4d] text-white resize-none overflow-hidden focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 px-2 rounded-md'></textarea>
-                    <button type='submit' className='ml-2 bg-[#4d4d4d] text-white rounded-full px-5 py-2 w-3/12 md:w-1/12'>Send</button>
+                <form className='bg-[#2a2a2a] w-screen flex h-14' onSubmit={sendMessage}>
+                    <textarea required placeholder='Write a message...' ref={textInput} value={message} onChange={handleCancelLinebreak} onKeyUp={handleMessage} className='bg-[#2a2a2a]  resize-none overflow-hidden focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 p-3'></textarea>
+                    {message && <button type='submit' className='flex justify-center items-center space-x-2 bg-[#2a2a2a]  w-3/12 md:w-1/12'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                        </svg>
+                        <p>Send</p>
+                    </button>}
                 </form>
             </div>
         </div>
