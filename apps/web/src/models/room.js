@@ -19,6 +19,7 @@ class Room {
             password: this.password,
             isPublic: this.isPublic,
             installedBots: this.installedBots,
+            roomOffer: null,
             archived: false,
             dateCreated: this.dateCreated
         };
