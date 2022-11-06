@@ -8,6 +8,7 @@ import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
 import PasswordModal from '../../components/passwordModal';
 import { truncate } from '../../utils/stringUtils';
+import generatePeerConnection from '../../webrtc/generatePeerConnection';
 
 export async function getServerSideProps({ params, req }) {
 
@@ -75,6 +76,13 @@ const ChatView = ({ roomData, id }) => {
         }
 
     }, []);
+
+    useEffect(() => {
+        const caller = user.uid === roomData.roomOwner.uid;
+
+        // Generate caller if the user owned the Room.
+        generatePeerConnection(caller, id)
+    }, [])
 
     useEffect(() => {
         if (autoScroller.current) autoScroller.current.scrollIntoView({ behavior: 'smooth' })
