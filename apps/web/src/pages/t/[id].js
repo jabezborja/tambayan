@@ -2,8 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getMessagesByRoom, listenToMessages } from '../../firebase/database';
-import moment from 'moment'
+import { listenToMessages } from '../../firebase/database';
 import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
 import PasswordModal from '../../components/passwordModal';
@@ -57,17 +56,10 @@ const ChatView = ({ roomData, id }) => {
             setShowPasswordModal(true);
         }
 
-        getMessagesByRoom(id)
-            .then((messages) => {
-                messages.forEach((message) => {
-                    setMessages(prevState => [...prevState, message.data()])
-                })
-            })
-
         setRoom(roomData);
 
-        const messageListener = listenToMessages(id, (messages) => {            
-            setMessages(messages);
+        const messageListener = listenToMessages(id, (message) => {
+            setMessages(prevMessages => [...prevMessages, message]);
         });
 
         return () => {
@@ -77,7 +69,7 @@ const ChatView = ({ roomData, id }) => {
     }, []);
 
     useEffect(() => {
-        if (autoScroller.current) autoScroller.current.scrollIntoView({ behavior: 'smooth' })
+        if (autoScroller.current) autoScroller.current.scrollIntoView()
     }, [messages])
 
     const handleMessage = e => {
@@ -98,23 +90,12 @@ const ChatView = ({ roomData, id }) => {
 
         e.preventDefault();
 
-        // Temporarily append `message` data for user to know that their message is still sending.
-        setMessages(old => [...old, {
-            dateSent: moment().toDate(),
-            message: "Sending message: " + message,
-            messageId: "message_sending",
-            repliedTo: messages[replyingTo],
-            user: user
-        }])
-
         setMessage("");
         setReplyingTo(null);
 
         if (replyingTo) {
             messages[replyingTo].message = truncate(messages[replyingTo].message)
         }
-
-        console.log(messages[replyingTo])
 
         await fetch('/api/messages/sendMessage', {
             method: 'POST',

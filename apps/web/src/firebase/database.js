@@ -3,7 +3,7 @@ import {
     doc, addDoc, updateDoc,
     getDoc, getDocs, collection,
     onSnapshot, arrayUnion,
-    setDoc, query, orderBy, arrayRemove, where, deleteDoc
+    setDoc, query, orderBy, deleteDoc, limit, startAfter, limitToLast
 } from 'firebase/firestore';
 
 import app from './clientApp';
@@ -45,12 +45,6 @@ const getDocument = async (collectionName, documentId) => {
     return false;
 }
 
-const getMessagesByRoom = async (roomId) => {
-    const collectionRef = collection(doc(db, "rooms", roomId), "messages");
-
-    return await getDocs(query(collectionRef, orderBy("dateSent", "asc")));
-}
-
 const updateMessages = async (collectionName, roomId, messageId, update) => {
     const ref = doc(collection(doc(db, collectionName, roomId), "messages"), messageId);
 
@@ -88,19 +82,17 @@ const updateBots = async (collectionName, documentId, update) => {
 }
 
 const listenToMessages = (roomId, func) => {
-    const q = query(collection(db, "rooms", `${roomId}`, "messages"), orderBy("dateSent", "asc"));
+    const q = query(collection(db, "rooms", `${roomId}`, "messages"), orderBy("dateSent", "asc"), limitToLast(10));
 
-    const unsub = onSnapshot(q, (doc) => {
-        const messages = [];
-
-        doc.forEach((message) => {
-            messages.push(message.data());
+    const unsub = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                func(change.doc.data());
+            }
         })
-
-        func(messages);
     })
 
     return unsub;
 }
 
-export { db, addDocument, setDocument, getDocuments, getDocument, getMessagesByRoom, updateMessages, deleteMessage, updateBots, listenToMessages }
+export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, deleteMessage, updateBots, listenToMessages }
