@@ -10,11 +10,9 @@ export default (req, res) => {
             req.body.roomName,
             req.body.description,
             req.body.roomOwner,
-            [], // Messages
             req.body.password,
             req.body.isPublic,
             [], // Installed Bots
-            [], // Bot Commands
             req.body.dateCreated
         );
         
@@ -42,7 +40,7 @@ export default (req, res) => {
                         botId: rodulfoBotId,
                         accessKey: rodulfoBotAccessKey,
                         roomId: id,
-                        message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/chat?room=" + id + "</strong>"
+                        message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/t/" + id + "</strong>"
                     })
                 })
 

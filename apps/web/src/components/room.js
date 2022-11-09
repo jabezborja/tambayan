@@ -1,17 +1,17 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import PasswordModal from './passwordModal';
 
 const Room = ({ room }) => {
     
     const router = useRouter();
+    const handleGoToRoom = () => router.push('/t/' + room.id);
 
-    return <div onClick={() => router.push('/t/' + room.id)} className="hover:cursor-pointer outline outline-1 outline-[#a5a5a5] rounded-lg px-3 py-4">
+    return <div onClick={handleGoToRoom} className="px-7 py-7 bg-[#2a2a2a] rounded-md hover:cursor-pointer">
         <div className="flex justify-between items-center">
             <div>
-                <p className="font-bold">{room.roomName}</p>
-                <p className="text-[0.7rem]">Hosted by {room.roomOwner.displayName}</p>
-                <p><strong>Description:</strong> {room.description}</p>
+                <p className="font-bold text-xl">{room.roomName}</p>
+                <p className='text-lg'>Hosted by <b>{room.roomOwner.displayName}</b></p>
+                
+                <p className='mt-3 text-md'>{room.description}</p>
             </div>
             
             <div className="mr-3">

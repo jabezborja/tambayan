@@ -27,7 +27,7 @@ const signInWith = async provider => {
 
             return true;
         })
-        .catch((err) => false)
+        .catch((err) => err)
 }
 
 const signInWithGoogle = async () => signInWith(googleProvider)

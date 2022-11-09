@@ -39,7 +39,7 @@ const App = () => {
 
             <div className="text-center">
                 <p className='text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#DC2424] to-[#4A569D]'>Tambayan: sa Gedli</p>
-                <p className='text-xl text-white'>
+                <p className='text-xl '>
                   An open-source tambayan chat app. Talk with people, make more friends.
                 </p>
             </div>
@@ -47,7 +47,7 @@ const App = () => {
             <div>
               <div>
                 {!signingIn
-                  ? <div className="mx-auto mt-20 bg-[#292929] w-full md:w-4/6 py-10 rounded-md text-white">
+                  ? <div className="mx-auto mt-20 bg-[#292929] w-full md:w-5/6 py-10 rounded-md ">
                       <div className="w-10/12 mx-auto">
                         <p className="text-start text-4xl font-bold">Welcome</p>
                         <p className="mt-2 text-base">By logging in you accept our <Link href="/">Privacy Policy</Link> and <Link href="/">Terms of Service</Link>.</p>
@@ -62,16 +62,16 @@ const App = () => {
                             </svg>
                             <p>Login with Google</p>
                           </button>
-                          <button className='bg-[#333333] text-white p-2 rounded-lg h-11 font-bold' onClick={handleContinueWithGithub}>Login with GitHub</button>
+                          <button className='bg-[#333333]  p-2 rounded-lg h-11 font-bold' onClick={handleContinueWithGithub}>Login with GitHub</button>
                         </div>
                       </div>
                     </div>
-                  : <p className="text-white font-bold text-2xl mt-5">Loading...</p>
+                  : <p className=" font-bold text-2xl mt-5">Loading...</p>
                 }
                 </div>
             </div>
         </div>
-        : <div className="flex justify-center items-center h-screen text-6xl text-white">Loading...</div>
+        : <div className="flex justify-center items-center h-screen text-6xl ">Loading...</div>
       }
     </div>
   );

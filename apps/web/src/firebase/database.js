@@ -3,7 +3,7 @@ import {
     doc, addDoc, updateDoc,
     getDoc, getDocs, collection,
     onSnapshot, arrayUnion,
-    setDoc, query, orderBy, arrayRemove
+    setDoc, query, orderBy, deleteDoc, limit, startAfter, limitToLast
 } from 'firebase/firestore';
 
 import app from './clientApp';
@@ -24,7 +24,13 @@ const setDocument = async (collectionName, document, id) => {
     return await setDoc(docRef, document);
 }
 
-const getDocuments = async (collectionName, by) => {
+const deleteDocument = async (collectionName, documentId) => {
+    const docRef = doc(db, collectionName, documentId);
+
+    return await deleteDoc(docRef);
+}
+
+const getDocuments = async (collectionName) => {
     const collectionRef = collection(db, collectionName);
 
     return await getDocs(query(collectionRef, orderBy("dateCreated", "asc")));
@@ -39,16 +45,28 @@ const getDocument = async (collectionName, documentId) => {
     return false;
 }
 
-const updateMessages = async (collectionName, documentId, update, isAdd=true) => {
-    const ref = doc(db, collectionName, documentId);
+const updateMessages = async (collectionName, roomId, messageId, update) => {
+    const ref = doc(collection(doc(db, collectionName, roomId), "messages"), messageId);
 
     try {
-        await updateDoc(ref, { messages: isAdd ? arrayUnion(update) : arrayRemove(update) });
+        await setDoc(ref, update);
         
         return [ true, null ];
     } catch (e) {
         return [ false, e ];
     }
+}
+
+const deleteMessage = async (roomId, messageId) => {
+    const docRef = doc(db, "rooms", roomId, "messages", messageId);
+
+    const originalMessage = (await getDoc(docRef)).data();
+
+    return await updateDoc(docRef, {
+        message: "<b title='The message has been deleted by the User but you can still report this to the admins if it disobeyed the Tambayan rules.'>[MESSAGE REDACTED]</b>",
+        originalMessage: originalMessage.message,
+        deleted: true
+    });
 }
 
 const updateBots = async (collectionName, documentId, update) => {
@@ -63,12 +81,18 @@ const updateBots = async (collectionName, documentId, update) => {
     }
 }
 
-const listenToDocument = (func, collectionName, documentId) => {
-    const unsub = onSnapshot(doc(db, collectionName, documentId), (doc) => {
-        func(doc);
+const listenToMessages = (roomId, func) => {
+    const q = query(collection(db, "rooms", `${roomId}`, "messages"), orderBy("dateSent", "asc"), limitToLast(10));
+
+    const unsub = onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                func(change.doc.data());
+            }
+        })
     })
 
     return unsub;
 }
 
-export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, updateBots, listenToDocument }
+export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, deleteMessage, updateBots, listenToMessages }

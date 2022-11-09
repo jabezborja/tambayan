@@ -49,15 +49,15 @@ const Message = (props) => {
                 <div className={`flex ${isOwnChat ? 'flex-row-reverse' : 'flex-row'} items-center mt-3`}>
                     <div
                         onClick={handleMessageHighlight}
-                        className={`mt-1 max-w-screen-md flex flex-col ${isOwnChat ? 'items-end' : 'items-start'} ${selectedMessageIndex !== props.index ? 'bg-[#4d4d4d]' : 'bg-[#333333]'} text-white py-2 px-3 w-fit rounded-md`}
+                        className={`mt-1 max-w-screen-md flex flex-col ${isOwnChat ? 'items-end' : 'items-start'} ${selectedMessageIndex !== props.index ? 'bg-[#3a3a3a]' : 'bg-[#4a4a4a]'}  py-2 px-3 w-fit rounded-md`}
                     >   
                         {data.repliedTo 
-                            && <div className={`mb-3 mt-1 w-full flex flex-col bg-[#3a3a3a] text-white py-2 px-3 rounded-md`}>
+                            && <div className={`mb-3 mt-1 w-full flex flex-col bg-[#2a2a2a]  py-2 px-3 rounded-md`}>
                                 <div className={`flex ${isOwnChat ? 'flex-row-reverse' : 'flex-row'}`}>
                                     <img className="h-10 w-10 rounded-full" src={data.repliedTo.user.photoURL}></img>
                                     <div className={`flex ${isOwnChat ? 'flex-row-reverse' : 'flex-row'} items-center`}>
                                         <div className={`flex flex-col ${isOwnChat ? 'items-end mr-2' : 'items-start ml-2'}`}>
-                                            <p className='text-white font-bold text-md'>{data.repliedTo.user.displayName}</p>
+                                            <p className=' font-bold text-md'>{data.repliedTo.user.displayName}</p>
                                             <p className='text-[0.7rem] hover:cursor-default' title={completeDate(data.repliedTo.user.seconds)}>{dateSent}</p>
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@ const Message = (props) => {
                             <img className="h-10 w-10 rounded-full" src={data.user.photoURL}></img>
                             <div className={`flex ${isOwnChat ? 'flex-row-reverse' : 'flex-row'} items-center`}>
                                 <div className={`flex flex-col ${isOwnChat ? 'items-end mr-2' : 'items-start ml-2'}`}>
-                                    <p className='text-white font-bold text-md'>{data.user.displayName}</p>
+                                    <p className=' font-bold text-md'>{data.user.displayName}</p>
                                     <p className='text-[0.7rem] hover:cursor-default' title={completeDate(data.dateSent.seconds)}>{dateSent}</p>
                                 </div>
 
@@ -114,11 +114,11 @@ const Message = (props) => {
                     {selectedMessageIndex === props.index
                         && <div className="flex flex-col items-center">
                             <button title="Menu" onClick={() => setShowDropdown(v => !v)} className={`${isOwnChat ? 'mr-2' : 'ml-2'} flex flex-col ${isOwnChat ? 'items-end' : 'items-start'}`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 ">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                                 </svg>
                                 {showDropdown
-                                    && <div class="z-10 w-44 bg-[#555555] text-white rounded">
+                                    && <div class="z-10 w-44 bg-[#555555]  rounded">
                                         <ul class="text-sm hover:bg-[#444444]" aria-labelledby="dropdownDefault">
                                             {isOwnChat
                                                 ? <li onClick={handleDelete}>
@@ -133,7 +133,7 @@ const Message = (props) => {
                                 }
                             </button>
                             <button title="Reply" onClick={handleReply} className={`${isOwnChat ? 'mr-2' : 'ml-2'} flex flex-col ${isOwnChat ? 'items-end' : 'items-start'}`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 ">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
                                 </svg>    
                             </button>
