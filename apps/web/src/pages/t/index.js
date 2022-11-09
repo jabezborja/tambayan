@@ -33,6 +33,7 @@ const Explore = ({ data }) => {
             router.replace('/');
             return () => {};
         };
+
     }, [user]);
     
     const handleLogout = async (e) => await signOutAccount();

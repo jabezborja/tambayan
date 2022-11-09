@@ -42,7 +42,6 @@ const CreateRoomModal = ({ state }) => {
 
     return (
         <div className="relative z-10">
-
             <div className="fixed inset-0 bg-[#020202] bg-opacity-75 transition-opacity"></div>
 
             <div className="fixed inset-5 z-10 overflow-y-auto">
