@@ -7,6 +7,7 @@ class Room {
         this.password = password;
         this.isPublic = isPublic;
         this.installedBots = installedBots;
+        this.joinedUsers = [];
         this.dateCreated = dateCreated;
     }
 
@@ -20,6 +21,7 @@ class Room {
             isPublic: this.isPublic,
             installedBots: this.installedBots,
             archived: false,
+            joinedUsers: this.joinedUsers,
             dateCreated: this.dateCreated
         };
     }
