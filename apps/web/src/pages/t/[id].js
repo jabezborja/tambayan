@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { listenToMessages } from '../../firebase/database';
+import { listenToMessages, updateJoinedUsers } from '../../firebase/database';
 import absoluteUrl from 'next-absolute-url';
 import MessageView from '../../components/message';
 import PasswordModal from '../../components/passwordModal';
@@ -35,7 +35,7 @@ const ChatView = ({ roomData, id }) => {
     const [ room, setRoom ] = useState();
     const [ messages, setMessages ] = useState([]);
     const [ selectedMessageIndex, setSelectedMessageIndex ] = useState(-1);
-    const [ showPasswordModal, setShowPasswordModal ] = useState();
+    const [ roomPasswordGuard, setRoomPasswordGuard ] = useState();
 
     const [ message, setMessage ] = useState('');
     const [ replyingTo, setReplyingTo ] = useState(null);
@@ -53,7 +53,11 @@ const ChatView = ({ roomData, id }) => {
         }
 
         if (!roomData.isPublic && user.uid !== roomData.roomOwner.uid) {
-            setShowPasswordModal(true);
+            setRoomPasswordGuard(true);
+        }
+
+        if (!roomData.joinedUsers.includes(user)) {
+            appendUser()
         }
 
         setRoom(roomData);
@@ -63,14 +67,25 @@ const ChatView = ({ roomData, id }) => {
         });
 
         return () => {
-            messageListener();
+            messageListener(); // Unsubscribe to message listener to avoid memory leak.
         }
 
     }, []);
 
     useEffect(() => {
         if (autoScroller.current) autoScroller.current.scrollIntoView()
-    }, [messages])
+    }, [messages]);
+
+    const appendUser = async () => {
+        await fetch('/api/rooms/joinUser', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                roomId: id,
+                user: user
+            })
+        });
+    }
 
     const handleMessage = e => {
         if (e.key === "Enter" && e.shiftKey) {
@@ -111,7 +126,7 @@ const ChatView = ({ roomData, id }) => {
         
     };
 
-    if (showPasswordModal) return <PasswordModal room={room} state={setShowPasswordModal} />
+    if (roomPasswordGuard) return <PasswordModal room={room} state={setRoomPasswordGuard} />
 
     return (
         <div className='flex flex-col justify-center h-screen'>

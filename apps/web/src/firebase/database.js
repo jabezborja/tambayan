@@ -81,6 +81,18 @@ const updateBots = async (collectionName, documentId, update) => {
     }
 }
 
+const updateJoinedUsers = async (collectionName, documentId, update) => {
+    const ref = doc(db, collectionName, documentId);
+
+    try {
+        await updateDoc(ref, { joinedUsers: arrayUnion(update) });
+        
+        return [ true, null ];
+    } catch (e) {
+        return [ false, e ];
+    }
+}
+
 const listenToMessages = (roomId, func) => {
     const q = query(collection(db, "rooms", `${roomId}`, "messages"), orderBy("dateSent", "asc"), limitToLast(10));
 
@@ -95,4 +107,4 @@ const listenToMessages = (roomId, func) => {
     return unsub;
 }
 
-export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, deleteMessage, updateBots, listenToMessages }
+export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, deleteMessage, updateBots, updateJoinedUsers, listenToMessages }
