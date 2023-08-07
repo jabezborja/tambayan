@@ -3,6 +3,7 @@ import Message from "../../../models/message";
 import { inProduction } from '../../../utils/environment';
 import { checkIsBotCommand } from "../../../utils/botUtils";
 import { uuidv4 } from '@firebase/util';
+import BotMessage from "../../../api-helpers/botMessage";
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
@@ -55,16 +56,22 @@ const fireBotsCallback = async (room, roomId, message) => {
 
         if (message.message.includes(botSlashCommand)) {
 
-            await fetch(bot.callbackUrl, {
+            const result = await fetch(bot.interactionEndpointURL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     roomId: roomId,
-                    accessKey: bot.accessKey,
-                    message: message,
-                    callback: `${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`
+                    command: message,
                 })
             });
+
+            const data = await result.json();
+            
+            BotMessage({
+                botId: bot.id,
+                reply: data['reply'],
+                roomId: roomId
+            })
         }
     }
 

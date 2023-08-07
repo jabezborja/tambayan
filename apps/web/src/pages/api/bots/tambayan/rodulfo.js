@@ -4,36 +4,50 @@ export default (req, res) => {
 
         if (req.method !== "POST") return res.status(405);
 
-        var messageToBeSent;
+        var reply;
 
-        const message = req.body.message.message;
+        const command = req.body.command;
 
-        if (message.includes("help")) {
-            messageToBeSent = "<p>Rodulfo commands: <b>/rodulfo [command]</b></p><br /><p><b>Commands:</b></p><p><pre><code>bark</code></pre> - bark like a good dog</p><p><pre><code>value of pi</code></pre> - show the value of pi</p><p><pre><code>dance</code></pre> - rodulfo will dance</p>"
-        } else if (message.includes("bark")) {
-            messageToBeSent = "Woof! Woof!"
-        } else if (message.includes("value of pi")) {
-            messageToBeSent = Math.PI.toString()
-        } else if (message.includes("dance")) {
-            messageToBeSent = "<p><img width='500' src='https://i.pinimg.com/originals/06/51/02/0651024a0251d8eca94fa29d6c185822.gif'></img></p>"
+        if (command.includes("help")) {
+            reply = `
+            <p>
+                Rodulfo commands:
+                <b>/rodulfo [command]</b>
+                </p>
+            <br />
+            <p>
+                <b>Commands:</b>
+            </p>
+            <p>
+                <pre>
+                    <code>bark</code>
+                </pre> - bark like a good dog
+            </p>
+            <p>
+                <pre>
+                    <code>value of pi</code>
+                </pre> - show the value of pi
+            </p>
+            <p>
+                <pre>
+                    <code>dance</code>
+                </pre> - rodulfo will dance
+            </p>
+            `
+        } else if (command.includes("bark")) {
+            reply = "Woof! Woof!"
+        } else if (command.includes("value of pi")) {
+            reply = Math.PI.toString()
+        } else if (command.includes("dance")) {
+            reply = "<p><img width='500' src='https://i.pinimg.com/originals/06/51/02/0651024a0251d8eca94fa29d6c185822.gif'></img></p>"
+        } else if (command.includes("version")) {
+            reply = "<p>Halo! My current version is v0.2.0</p>"
         } else {
-            messageToBeSent = "Beep boop! That doesn't exist in my vocabulary."
+            reply = "Beep boop! That doesn't exist in my vocabulary."
         }
-        
-        const result = await fetch(req.body.callback, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                botId: "kec1nXCEtzeXverw3fZD",
-                accessKey: req.body.accessKey,
-                roomId: req.body.roomId,
-                message: `<p>${messageToBeSent}</p>`
-            })
-        });
 
-        const data = await result.json();
+        res.status(200).send({ reply: reply });
 
-        res.status(200).send(data);
         resolve();
     });
 }

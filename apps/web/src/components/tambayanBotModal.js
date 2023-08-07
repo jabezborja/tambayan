@@ -37,7 +37,7 @@ const TambayanBotModal = ({ state }) => {
     const [ loading, setLoading ] = useState(false);
 
     const [ displayName, setDisplayName ] = useState('');
-    const [ callbackUrl, setCallbackUrl ] = useState('');
+    const [ interactionEndpointURL, setinteractionEndpointURL ] = useState('');
     const [ botCommand, setBotCommand ] = useState('');
     const [ email, setEmail ] = useState('');
     const [ botPhotoURL, setBotPhotoURL ] = useState('');
@@ -56,7 +56,7 @@ const TambayanBotModal = ({ state }) => {
 
         const validURL = new RegExp(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g);
 
-        if (!validURL.test(callbackUrl)) {
+        if (!validURL.test(interactionEndpointURL)) {
             alert("Your Callback URL is not valid.");
 
             return;
@@ -71,7 +71,7 @@ const TambayanBotModal = ({ state }) => {
                 displayName: displayName,
                 email: email,
                 photoURL: botPhotoURL,
-                callbackUrl: callbackUrl,
+                interactionEndpointURL: interactionEndpointURL,
                 botCommand: botCommand,
             })
         });
@@ -109,7 +109,7 @@ const TambayanBotModal = ({ state }) => {
                                                 There are few things to have before setting up your bot:
                                                 <br />
                                                 <br />
-                                                - A Live Bot API Server or the 'CallbackURL'
+                                                - A Live Bot API Server or the 'interactionEndpointURL'
                                                 <br />
                                                 - Bot name & command
                                                 <br />
@@ -120,9 +120,9 @@ const TambayanBotModal = ({ state }) => {
                                                     <input required name="displayName" placeholder="Rodulfo" value={displayName} onChange={(e) => setDisplayName(e.target.value)} className='mt-1 bg-[#2a2a2a]  focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
                                                 </div>
                                                 <div className='mt-3 '>
-                                                    <label htmlFor="callbackUrl">Bot Callback URL</label>
+                                                    <label htmlFor="interactionEndpointURL">Bot Callback URL</label>
                                                     <br />
-                                                    <input required name="callbackUrl" placeholder="https://my.api.server.com.ph/" value={callbackUrl} onChange={(e) => setCallbackUrl(e.target.value)} className='mt-1 bg-[#2a2a2a]  focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
+                                                    <input required name="interactionEndpointURL" placeholder="https://my.api.server.com.ph/" value={interactionEndpointURL} onChange={(e) => setinteractionEndpointURL(e.target.value)} className='mt-1 bg-[#2a2a2a]  focus:border-0 focus:ring-0 focus:outline-0 w-9/12 md:w-11/12 h-10 px-2 rounded-md' type="textarea"></input>
                                                 </div>
                                                 <div className='mt-3 '>
                                                     <label htmlFor="botCommand">Bot Command</label>
