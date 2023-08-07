@@ -7,6 +7,7 @@ import absoluteUrl from 'next-absolute-url';
 import CreateRoomModal from '../../components/createRoomModal'
 import Room from '../../components/room';
 import InfoCard from "../../components/infocard";
+import TambayanBotModal from "../../components/tambayanBotModal";
 
 export async function getServerSideProps({ req }) {
     const { origin } = absoluteUrl(req, req.headers.host);
@@ -22,6 +23,7 @@ const Explore = ({ data }) => {
     const router = useRouter();
 
     const [ showCreateRoomModal, setShowCreateRoomModal ] = useState(false);
+    const [ showTambayanBotModal, setShowTambayanBotModal ] = useState(false);
 
     const rooms = data.rooms;
     const user = useSelector(state => state.user.user);
@@ -48,11 +50,13 @@ const Explore = ({ data }) => {
             </div>
             <div>
                 { showCreateRoomModal ? <CreateRoomModal state={setShowCreateRoomModal} /> : <></> }
+                { showTambayanBotModal ? <TambayanBotModal state={setShowTambayanBotModal} /> : <></> }
 
                 <div className="mt-4">
                     {user ? <p className="text-3xl font-bold ">Hello, {user.displayName} 👋</p> : ''}
                     <div className="w-max space-x-2 flex">
                         <button className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' onClick={() => setShowCreateRoomModal(true)}>Create New Tambayan</button>
+                        <button className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' onClick={() => setShowTambayanBotModal(true)}>🤖 Tambayan Bot</button>
                         <button className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' onClick={handleLogout}>Logout</button>
                     </div>
                 </div>
