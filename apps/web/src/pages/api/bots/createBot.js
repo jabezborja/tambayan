@@ -13,10 +13,11 @@ export default (req, res) => {
         botJson['accessKey'] = uuidv4();
         botJson['interactionEndpointURL'] = req.body.interactionEndpointURL;
         botJson['botCommand'] = req.body.botCommand;
+        botJson['creatorId'] = req.body.creatorId;
 
         addDocument("bots", botJson)
             .then((id) => {
-                res.status(200).send({ botId: id, accessKey: botJson.accessKey, success: true });
+                res.status(200).send({ success: true });
                 resolve()
             });
     });
