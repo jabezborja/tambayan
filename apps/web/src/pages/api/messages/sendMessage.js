@@ -4,6 +4,7 @@ import { inProduction } from '../../../utils/environment';
 import { checkIsBotCommand } from "../../../utils/botUtils";
 import { uuidv4 } from '@firebase/util';
 import BotMessage from "../../../api-helpers/botMessage";
+import { getBotById } from "../../../firebase/developers"
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
@@ -51,7 +52,8 @@ const fireBotsCallback = async (room, roomId, message) => {
 
     for (let i = 0; i < room.installedBots.length; i++) {
 
-        const bot = room.installedBots[i];
+        const botId = room.installedBots[i];
+        const bot = getBotById(botId);
         const botSlashCommand = '/' + bot.botCommand;
 
         if (message.message.includes(botSlashCommand)) {
@@ -68,7 +70,7 @@ const fireBotsCallback = async (room, roomId, message) => {
             const response = await result.json();
             
             BotMessage({
-                botId: bot.id,
+                botId: bot.uid,
                 reply: response.data.content,
                 roomId: roomId
             })

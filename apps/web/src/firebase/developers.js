@@ -17,4 +17,12 @@ const getDeveloperBotsByUserId = async (id) => {
     return data;
 }
 
-export { getDeveloperBotsByUserId }
+const getBotById = async (uid) => {
+    const q = query(collection(db, "bots"), where("uid", "==", uid));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot[0].data();
+
+    return data;
+}
+
+export { getDeveloperBotsByUserId, getBotById }
