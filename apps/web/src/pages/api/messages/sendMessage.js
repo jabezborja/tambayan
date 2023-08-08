@@ -65,11 +65,11 @@ const fireBotsCallback = async (room, roomId, message) => {
                 })
             });
 
-            const data = await result.json();
+            const response = await result.json();
             
             BotMessage({
                 botId: bot.id,
-                reply: data['reply'],
+                reply: response.data.content,
                 roomId: roomId
             })
         }

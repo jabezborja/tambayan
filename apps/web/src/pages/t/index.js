@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { signOutAccount } from "../../firebase/auth";
 import absoluteUrl from 'next-absolute-url';
 
+import Link from 'next/link';
 import CreateRoomModal from '../../components/createRoomModal'
 import Room from '../../components/room';
 import InfoCard from "../../components/infocard";
@@ -56,7 +57,7 @@ const Explore = ({ data }) => {
                     {user ? <p className="text-3xl font-bold ">Hello, {user.displayName} 👋</p> : ''}
                     <div className="w-max space-x-2 flex">
                         <button className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' onClick={() => setShowCreateRoomModal(true)}>Create New Tambayan</button>
-                        <button className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' onClick={() => setShowTambayanBotModal(true)}>🤖 Tambayan Bot</button>
+                        <Link className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' href="/developers">Developers Portal</Link>
                         <button className='mt-5 bg-[#2a2a2a]  p-2 rounded-md' onClick={handleLogout}>Logout</button>
                     </div>
                 </div>

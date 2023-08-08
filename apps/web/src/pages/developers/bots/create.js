@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 const CreateBot = () => {
+
+    const router = useRouter();
 
     const [ loading, setLoading ] = useState(false);
 
@@ -114,9 +117,10 @@ const CreateBot = () => {
                         </div>
                     </div>
 
-                    <div className="w-5/12 text-center italic">
-                        <p>A lovely note by the Developer: Not ready to commit yet? We all sometimes do.</p>
-                        <p>Contact me at <span className="font-bold">jabezborja.dev@gmail.com</span>, I'll host your Tambayan Bot 😃</p>
+                    <div className="w-6/12 text-center italic">
+                        <p>A lovely note by the Developer: Not ready to commit for a server yet? We all sometimes do.
+                        Push your Tambayan Bot code to <code>apps/web/src/pages/api/bots/tambayan/sinigang/</code> and submit a PR to get a free Bot hosting, just copy the Rodulfo.js template 😃</p>
+                        <p className="mt-2 text-sm">Note: Limited to 5 bot slots only.</p>
                     </div>
 
                     <div className="my-5 bg-[#1a1a1a] px-4 py-3 sm:flex sm:px-6">
@@ -130,7 +134,7 @@ const CreateBot = () => {
                                 <span className="sr-only">Loading...</span>
                             </div>
                         }
-                        <button onClick={(e) => state(false)} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-[#2a2a2a] px-4 py-2 text-base font-medium  shadow-sm hover:bg-[#383838] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Exit</button>
+                        <button onClick={() => router.back()} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-[#2a2a2a] px-4 py-2 text-base font-medium  shadow-sm hover:bg-[#383838] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Exit</button>
                     </div>
                 </div>
             </form>
