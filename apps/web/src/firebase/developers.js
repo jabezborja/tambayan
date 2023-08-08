@@ -1,6 +1,6 @@
 import {
     collection, where,
-    query, getDocs
+    query, getDocs, doc
 } from 'firebase/firestore';
 import { db } from './database';
 
@@ -17,12 +17,5 @@ const getDeveloperBotsByUserId = async (id) => {
     return data;
 }
 
-const getBotById = async (uid) => {
-    const q = query(collection(db, "bots"), where("uid", "==", uid));
-    const querySnapshot = await getDocs(q);
-    const data = querySnapshot[0].data();
 
-    return data;
-}
-
-export { getDeveloperBotsByUserId, getBotById }
+export { getDeveloperBotsByUserId }

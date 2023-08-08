@@ -3,8 +3,9 @@ import Message from "../../../models/message";
 import { inProduction } from '../../../utils/environment';
 import { checkIsBotCommand } from "../../../utils/botUtils";
 import { uuidv4 } from '@firebase/util';
-import BotMessage from "../../../api-helpers/botMessage";
+import sendBotMessage from "../../../api-helpers/botMessage";
 import { getBotById } from "../../../firebase/developers"
+import Bot from "../../../models/bot"
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
@@ -53,7 +54,18 @@ const fireBotsCallback = async (room, roomId, message) => {
     for (let i = 0; i < room.installedBots.length; i++) {
 
         const botId = room.installedBots[i];
-        const bot = getBotById(botId);
+        const botData = await getDocument("bots", botId);
+        const bot = new Bot(
+            botData['uid'],
+            botData['displayName'],
+            botData['email'],
+            botData['photoURL'],
+            botData['botCommand'],
+            botData['creatorId'],
+            botData['accessKey'],
+            botData['interactionEndpointURL'],
+            botData['isBot']
+        )
         const botSlashCommand = '/' + bot.botCommand;
 
         if (message.message.includes(botSlashCommand)) {
@@ -63,14 +75,14 @@ const fireBotsCallback = async (room, roomId, message) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     roomId: roomId,
-                    command: message,
+                    command: message.message,
                 })
             });
 
             const response = await result.json();
             
-            BotMessage({
-                botId: bot.uid,
+            sendBotMessage({
+                bot: bot,
                 reply: response.data.content,
                 roomId: roomId
             })
