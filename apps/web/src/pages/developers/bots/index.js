@@ -32,7 +32,7 @@ const Bots = () => {
             prop: id
         });
         
-        setCurrentBot(bot[0])
+        setCurrentBot(bot[0]);
         setBotView(true);
     }
 

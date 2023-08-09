@@ -1,6 +1,7 @@
-import { addDocument } from "../../../firebase/database";
-import Room from "../../../models/room";
+import { addDocument, getDocument } from "../../../firebase/database";
 import { inProduction } from "../../../utils/environment";
+import Room from "../../../models/room";
+import Bot from "../../../models/bot"
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
@@ -30,18 +31,25 @@ export default (req, res) => {
                         accessKey: rodulfoBotAccessKey,
                         roomId: id
                     })
-                })
+                });
 
-                // Initial Rodulfo message.
-                await fetch(`${inProduction ? 'https://tambayan.link' : 'http://localhost:3000'}/api/bots/botMessage`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        botId: rodulfoBotId,
-                        accessKey: rodulfoBotAccessKey,
-                        roomId: id,
-                        message: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/t/" + id + "</strong>"
-                    })
+                const botData = getDocument("bots", rodulfoBotId);
+                const bot = new Bot(
+                    botData['uid'],
+                    botData['displayName'],
+                    botData['email'],
+                    botData['photoURL'],
+                    botData['botCommand'],
+                    botData['creatorId'],
+                    botData['accessKey'],
+                    botData['interactionEndpointURL'],
+                    botData['isBot']
+                );
+
+                sendBotMessage({
+                    bot: bot,
+                    reply: "Hey, what's up mga lodi. Welcome to " + req.body.roomName + ". Say Hello! Beep boop!<br /><br />Type `/rodulfo help` to know my commands.<br /><br />Invite your friends here to our tambayan:<br /><strong>https://tambayan.link/t/" + id + "</strong>",
+                    roomId: id
                 })
 
                 res.status(200).send({ roomId: id, success: true });

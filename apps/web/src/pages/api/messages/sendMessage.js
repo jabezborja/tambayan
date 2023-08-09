@@ -22,9 +22,9 @@ export default (req, res) => {
                     new Date()
                 );
 
-                const [ isBotCommand, botCommand ] = checkIsBotCommand(data.installedBots, message.message);
+                const botCommand = checkIsBotCommand(data.installedBots, message.message)
 
-                if (isBotCommand) {
+                if (botCommand) {
                     // If the message is a Bot Command, modify the message to `/botcommand` for markdown.
                     message.message = message.message.replace(`/${botCommand}`, `\`/${botCommand}\``);
                 }
@@ -73,12 +73,12 @@ const fireBotsCallback = async (room, roomId, message) => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     roomId: roomId,
-                    command: message.message,
+                    command: message.message.replace(`/${bot.botCommand} `, ""),
                 })
             });
 
             const response = await result.json();
-            
+                        
             sendBotMessage({
                 bot: bot,
                 reply: response.data.content,
