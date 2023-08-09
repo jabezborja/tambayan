@@ -3,7 +3,7 @@ import {
     doc, addDoc, updateDoc,
     getDoc, getDocs, collection,
     onSnapshot, arrayUnion,
-    setDoc, query, orderBy, deleteDoc, limit, startAfter, limitToLast
+    setDoc, query, orderBy, deleteDoc, limit, startAfter, limitToLast, where
 } from 'firebase/firestore';
 
 import app from './clientApp';
@@ -43,6 +43,19 @@ const getDocument = async (collectionName, documentId) => {
     if ((await docSnap).exists()) return (await docSnap).data();
 
     return false;
+}
+
+const getDocumentsByProperty = async (collectionName, { by, prop }) => {
+    const q = query(collection(db, collectionName), where(by, "==", prop));
+    const querySnapshot = await getDocs(q);
+
+    var data = [];
+
+    querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+    });
+
+    return data;
 }
 
 const updateMessages = async (collectionName, roomId, messageId, update) => {
@@ -107,4 +120,4 @@ const listenToMessages = (roomId, func) => {
     return unsub;
 }
 
-export { db, addDocument, setDocument, getDocuments, getDocument, updateMessages, deleteMessage, updateBots, updateJoinedUsers, listenToMessages }
+export { db, addDocument, setDocument, getDocuments, getDocument, getDocumentsByProperty, updateMessages, deleteMessage, updateBots, updateJoinedUsers, listenToMessages }
