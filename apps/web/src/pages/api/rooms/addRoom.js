@@ -34,7 +34,7 @@ export default (req, res) => {
                     })
                 });
 
-                const botData = getDocument("bots", rodulfoBotId);
+                const botData = await getDocument("bots", rodulfoBotId);
                 const bot = new Bot(
                     botData['uid'],
                     botData['displayName'],

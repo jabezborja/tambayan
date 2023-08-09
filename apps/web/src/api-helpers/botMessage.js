@@ -17,8 +17,10 @@ const sendBotMessage = ({ bot, reply, roomId }) => {
     updateMessages("rooms", roomId, message.id, message.toJson())
         .then(([ success, err ]) => {
             if (success) {
+                console.log('ues')
                 return true;
             } else {
+                console.log(err)
                 return false;
             }
         })
