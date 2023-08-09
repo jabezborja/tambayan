@@ -2,6 +2,7 @@ import { addDocument, getDocument } from "../../../firebase/database";
 import { inProduction } from "../../../utils/environment";
 import Room from "../../../models/room";
 import Bot from "../../../models/bot"
+import sendBotMessage from "../../../api-helpers/botMessage";
 
 export default (req, res) => {
     return new Promise((resolve, reject) => {
