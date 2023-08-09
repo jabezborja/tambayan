@@ -1,10 +1,8 @@
 import { getDocument, updateMessages } from "../../../firebase/database";
 import Message from "../../../models/message";
-import { inProduction } from '../../../utils/environment';
 import { checkIsBotCommand } from "../../../utils/botUtils";
 import { uuidv4 } from '@firebase/util';
 import sendBotMessage from "../../../api-helpers/botMessage";
-import { getBotById } from "../../../firebase/developers"
 import Bot from "../../../models/bot"
 
 export default (req, res) => {
