@@ -107,7 +107,7 @@ const updateJoinedUsers = async (collectionName, documentId, update) => {
 }
 
 const listenToMessages = (roomId, func) => {
-    const q = query(collection(db, "rooms", `${roomId}`, "messages"), orderBy("dateSent", "asc"), limitToLast(10));
+    const q = query(collection(db, "rooms", `${roomId}`, "messages"), orderBy("dateSent", "asc"));
 
     const unsub = onSnapshot(q, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
